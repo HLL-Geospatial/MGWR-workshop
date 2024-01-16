@@ -1,0 +1,425 @@
+---
+title: "Introduction to Multiscale Geographic Weighted Regressions (MGWR)"
+subtitle: ""
+author: "Daniel Beene & Theodros Woldeyohannes"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    toc_depth: 5
+    code_folding: show
+    toc_float: true
+    collapsed: false
+    smooth_scroll: TRUE
+    theme: spacelab
+    highlight: tango
+  pdf_document:
+    df_print: kable
+fontsize: 12pt
+geometry: margin=0.25in
+always_allow_html: yes
+---
+
+<style>
+/* HTML FORMATTING */
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
+  margin-top: 25px; /* space before each header */
+  font-weight: bold; /* bold headers */
+}
+</style>
+----------------------------------------
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment = NA, message = FALSE, warning = FALSE, width = 100)
+knitr::opts_chunk$set(fig.align = "center", fig.height = 4, fig.width = 6)
+knitr::opts_chunk$set(cache = FALSE)
+```
+
+```{r}
+# Import libraries
+library(rgdal)
+library(GWmodel)
+library(ggplot2)
+library(GGally)
+library(gridExtra)
+library(tmap)
+library(dplyr)
+library(sf)
+library(stringr)
+library(tidyverse)
+library(Hmisc)
+
+source("plotting_functions.R")
+```
+
+# Background
+
+
+
+## Modeling
+
+### Global Models
+
+### Spatial Autocorrelation
+
+### Local Models
+
+#### Geographically Weighted Regression (GWR)
+
+#### Multiscale Geographically Weighted Regression (MGWR)
+
+#### Other Modeling Approaches
+
+# Example: Low Birthweight Rates
+
+Describe main objective: to demonstrate how spatial relationships may be lurking variables in regression models. 
+
+## Data
+
+Describe datasets here, then import each one below.
+
+```{r}
+# Import shapefile
+dat_tracts <- readOGR(dsn = "./Tracts/tl_2010_08_tract10.shp")
+summary(dat_tracts)
+
+# Plot shapefile with base R - this is just to check that it renders correctly
+par(mar=c(0,0,0,0))
+plot(dat_tracts, col="#333333", lwd=0.25, border=0)
+
+```
+
+### Exposure
+
+This data table contains the 10-year (2008 - 2018) average of total releases in pounds from TRI facilities by census tract in Colorado. We need first ensure that the census tract ID (GEOID) is the correct length. Some states have a GEOID that begins with 0, Colorado being one of them. The problem is that CSV files created using MS Excel (most are) will remove the leading 0 in numbers. We will first make sure that every GEOID in the table is 11 characters long by padding them with a 0 on the left side.
+
+```{r, echo=FALSE}
+dat_tri <- read.csv('./Exposure/avgReleases_tract_CO_2008-2018.csv')
+# Pad GEOID to 11 characters
+dat_tri$GEOID10 <- str_pad(dat_tri$GEOID10, width = 11, side = "left", pad = 0)
+```
+All GEOIDs are `r unique(nchar(dat_tri$tract_fips10))` characters long. *Note: if this says something other than 11 make sure the chunk above is running correctly.*
+
+### Confounders
+```{r, echo=FALSE}
+svi <- read.csv('./Confounders/SVI_2018_US.csv') # SVI data for all census tracts in US
+svi$FIPS <- str_pad(svi$FIPS, width = 11, side = "left", pad = 0) # Pad GEOIDs so that they are all 11 characters long
+# unique(nchar(svi$FIPS))
+
+svi_sub <- svi %>%
+  filter(ST_ABBR %in% c("CO")) # Subset SVI to only include tracts in Colorado
+
+svi_sub[svi_sub == -999] <- NA # Missing values are coded as -999, here we replace -999 with NA
+
+# Keep percentage, percentile, theme ranking, flag variables, and total population
+svi_sub <- svi_sub %>%
+  dplyr::select(FIPS, starts_with(c("E_TOTPOP", "EP_", "EPL_", "SPL_", "RPL", "F_")))
+```
+
+All GEOIDs in the SVI dataset are `r unique(nchar(svi_sub$FIPS))` characters long. *Note: if this says something other than 11 make sure the chunk above is running correctly.*
+
+### Outcome
+```{r, echo=FALSE}
+outcome <- read.csv('./Outcome/CDPHE_Composite_Selected_Health_Outcome_Dataset_(Census_Tract).csv')
+lwb <- outcome[, c(2, 26:32)] # Subset to only include low birthweight variables and GEOID
+
+lwb$TRACT_FIPS <- str_pad(lwb$TRACT_FIPS, width = 11, side = "left", pad = 0) # Pad GEOIDs so that they are all 11 characters long
+```
+
+All GEOIDs in the low birthweight dataset are `r unique(nchar(lwb$TRACT_FIPS))` characters long. *Note: if this says something other than 11 make sure the chunk above is running correctly.*
+
+```{r, echo=FALSE}
+# Combine data tables
+
+# Join data using the dplyr library - this doesn't work on SpatialPolygonDataFrame data types, so convert first
+dat_full <- st_as_sf(dat_tracts)
+
+# Exposure
+dat_full <- dat_full %>%
+  right_join(dat_tri, by = c("GEOID10" = "GEOID10"))
+
+# Outcome
+dat_full <- dat_full %>%
+  right_join(lwb, by = c("GEOID10" = "TRACT_FIPS"))
+
+# Confounders
+dat_full <- dat_full %>%
+  right_join(svi_sub, by = c("GEOID10" = "FIPS"))
+
+# Create a subset for global models
+global_dat <- dat_full %>%
+  select(GEOID10, avgReleasesLb_10yr, LWB_ADJRATE, E_TOTPOP, starts_with("EP_")) # Keep total population estimate (E_TOTPOT) and land area (ALAND10) for later reference
+global_dat <- 
+  data.frame(global_dat[, 1:20]
+             ) 
+# %>% # To only keep certain observations, uncomment this line and move the pipe (%>%) up to the line above
+#   # Only retain observations we're analyzing
+#   slice(
+#     -659
+#   )
+
+
+dat_full <- as(na.omit(dat_full), "Spatial") # Convert dat_full back to spatial - we will use this for the spatial models
+
+```
+
+
+## Global Model
+```{r, echo=FALSE}
+# fit full model
+lm_full <- lm(LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + EP_NOHSDP + EP_AGE65 + EP_AGE17 + EP_DISABL
+                                               + EP_SNGPNT + EP_MINRTY + EP_LIMENG + EP_MUNIT + EP_MOBILE + EP_CROWD
+                                               + EP_NOVEH + EP_GROUPQ + EP_UNINSUR
+              , data = global_dat)
+
+summary(lm_full)
+```
+
+```{r, echo=FALSE}
+## Backward selection using model AIC
+lm_red_AIC <- step(lm_full, direction="backward", test="F")
+lm_final <- lm_red_AIC
+summary(lm_final)
+
+# BIC (not shown)
+# step(lm_cchd_full, direction="backward", test="F", k=log(nrow(dat_cchd)))
+```
+
+```{r, fig.height = 8, fig.width = 8}
+# Plot correlation matrix of variables from the reduced model
+vars <- c(
+  "avgReleasesLb_10yr", "EP_POV", "EP_UNEMP", "EP_PCI", 
+  "EP_NOHSDP", "EP_AGE17", "EP_DISABL", "EP_MINRTY", 
+  "EP_GROUPQ", "EP_UNINSUR"
+)
+
+# Create a subset of 'global_dat' with selected variables
+global_dat_sub <- global_dat[, c("LWB_ADJRATE", vars)]
+
+# Plot the correlation matrix using ggpairs
+p <- ggpairs(
+  global_dat_sub,
+  upper = list(continuous = wrap("points", alpha = 0.2, size = 0.5)),
+  lower = list(continuous = "cor")
+)
+
+print(p)
+```
+
+```{R, fig.height = 3, fig.width = 10}
+# plot diagnostics
+lm_diag_plots(lm_red_AIC, sw_plot_set = "simpleAV")
+```
+
+* Full model diagnostics identify point 659 as being influential, and the Cook's distance vs. leverage plot suggests that it exerts some noteworthy leverage on the overall model. However, the AV plots don't corroborate this conclusion, showing that point 659 doesn't appear to pull the line of best fit significantly in its direction.
+
+
+For each model: print and interpret model diagnostics and test for spatial autocorrelation.
+```{r}
+# To do: Spatial autocorrelation
+```
+
+## Local Models
+### Distance Matrix
+
+* Describe what a distance matrix is here
+
+```{r}
+# Calculate distance matrix
+DM <- gw.dist(dp.locat = coordinates(dat_full))
+```
+
+
+### Bandwidths
+
+* Describe bandwidths/neighborhoods here
+
+```{r, echo=FALSE}
+# Define optimal bandwidths for GWR
+bw <- bw.gwr(LWB_ADJRATE ~ avgReleasesLb_10yr 
+                         + EP_POV
+                         + EP_UNEMP
+                         + EP_PCI
+                         + EP_NOHSDP
+                         + EP_AGE17
+                         + EP_DISABL
+                         + EP_MINRTY
+                         + EP_GROUPQ
+                         + EP_UNINSUR
+                         # + ALAND10 # This makes the model get stuck for some reason
+           , data = dat_full
+           , approach = "AICc"
+           , kernel = "gaussian"
+           , adaptive = TRUE
+           , longlat = TRUE
+           , dMat = DM)
+           
+```
+### GWR
+
+```{r}
+# Basic GWR
+gwr_results_dat <- gwr.basic(LWB_ADJRATE ~ avgReleasesLb_10yr 
+                                         + EP_POV
+                                         + EP_UNEMP
+                                         + EP_PCI
+                                         + EP_NOHSDP
+                                         + EP_AGE17
+                                         + EP_DISABL
+                                         + EP_MINRTY
+                                         + EP_GROUPQ
+                                         + EP_UNINSUR
+                           , data = dat_full
+                           , bw = bw
+                           , dMat = DM
+                           , kernel = "bisquare"
+                           , adaptive = TRUE
+                           , longlat = TRUE)
+
+# Model diagnostics
+gwr_results_dat$GW.diagnostic
+```
+
+```{r}
+# Spatial autocorrelation
+```
+
+
+### MGWR
+```{r, echo=FALSE}
+# Multiscale geographically weighted regression
+# Documentation: https://search.r-project.org/CRAN/refmans/GWmodel/html/gwr.multiscale.html
+mgwr_results_dat_full <- gwr.multiscale(LWB_ADJRATE ~ avgReleasesLb_10yr 
+                                               + EP_POV
+                                               + EP_UNEMP
+                                               + EP_PCI
+                                               + EP_NOHSDP
+                                               + EP_AGE17
+                                               + EP_DISABL
+                                               + EP_MINRTY
+                                               + EP_GROUPQ
+                                               + EP_UNINSUR
+                                               # + ALAND10
+                                      , data = dat_full
+                                      , max.iterations = 2 # Set max iterations higher to optimize model - it's at 2 now to minimize computational burden
+                                      , kernel = "bisquare"
+                                      , adaptive = TRUE
+                                      , criterion = "dCVR"
+)
+
+# Model outputs
+print(mgwr_results_dat_full)
+
+
+# Model diagnostics
+mgwr_results_dat_full$GW.diagnostic
+```
+
+
+
+
+```{r}
+# Spatial autocorrelation
+```
+
+
+```{r}
+#Plot neighborhood sizes (bandwidths)
+```
+
+```{r}
+# Summary statistics of coefficients
+coefficients <- data.frame(mgwr_results_dat_full$SDF[, 2:11])
+summary_stats <- apply(coefficients, 2, function(x) {
+  c(
+    min = round(min(x, na.rm = TRUE), 4),
+    q1 = round(quantile(x, 0.25, na.rm = TRUE), 4),
+    median = round(median(x, na.rm = TRUE), 4),
+    q3 = round(quantile(x, 0.75, na.rm = TRUE), 4),
+    max = round(max(x, na.rm = TRUE), 4),
+    sd = round(sd(x, na.rm = TRUE), 4)
+  )
+})
+summary_table <- data.frame(t(summary_stats))
+print(summary_table)
+```
+
+```{r}
+# Boxplots of coefficients
+melt_coefficients <- reshape2::melt(coefficients)
+
+p2 <- ggplot(melt_coefficients, aes(x = fct_reorder(variable, value, .fun = mean), y = value))
+p2 <- p2 + geom_boxplot()
+p2 <- p2 + labs(x = "", y = "") + ggtitle("")
+p2 <- p2 + theme(axis.text.x = element_text(angle = 40, hjust = 1))
+p2 <- p2 + geom_hline(yintercept = 0, linetype = "dashed", color = "red")
+
+# Print the modified plot
+print(p2)
+
+```
+
+## Mapping Results
+```{r, fig.width = 8.5, fig.height = 10.5}
+# Plot coefficients
+# Plot function:
+plot.gwr.coefs = function(gwr.model.SDF, variable.name, tvalues) {
+  # determine which observations are significant from via the t-values
+  tval = tvalues
+  insignif = tval >= -1.96 & tval <= 1.96
+  
+  # create the background and main layer with shaded polygons
+  p = tm_shape(gwr.model.SDF) +
+    tm_polygons(variable.name, palette = "RdYlBu", title = variable.name, alpha = 0.7) +
+    tm_borders(lwd = 0.5) +  # Add borders for all polygons
+    
+    tm_layout(legend.outside = TRUE,  # Place legend outside the plot
+              legend.position = c("right", "top"),  # Position the legend to the right
+              legend.outside.size = 0.3,  # Adjust the legend width as needed
+              )  
+  
+  # check if there are any non-empty units for the insignificant observations
+  if (any(insignif)) {
+    # now add the t-values layer
+    p = p +
+      tm_shape(gwr.model.SDF[insignif,]) +  # Use insignif for insignificant observations
+      tm_polygons("black", alpha = 0.75)
+  }
+  
+  return(p)
+}
+
+p1m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "Intercept", mgwr_results_dat_full$SDF$Intercept_TV)
+p2m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "avgReleasesLb_10yr", mgwr_results_dat_full$SDF$avgReleasesLb_10yr_TV)
+p3m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_POV", mgwr_results_dat_full$SDF$EP_POV_TV)
+p4m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_PCI", mgwr_results_dat_full$SDF$EP_PCI_TV)
+p5m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_NOHSDP", mgwr_results_dat_full$SDF$EP_NOHSDP_TV)
+p6m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_AGE17", mgwr_results_dat_full$SDF$EP_AGE17_TV)
+p7m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_DISABL", mgwr_results_dat_full$SDF$EP_DISABL_TV)
+p8m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_MINRTY", mgwr_results_dat_full$SDF$EP_MINRTY_TV)
+p9m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_GROUPQ", mgwr_results_dat_full$SDF$EP_GROUPQ_TV)
+p10m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_UNINSUR", mgwr_results_dat_full$SDF$EP_UNINSUR_TV)
+
+p_mgwr <- tmap_arrange(p1m
+                     , p2m
+                     , p3m
+                     , p4m
+                     , p5m
+                     , p6m
+                     , p7m
+                     , p8m
+                     , p9m
+                     , p10m
+                     , ncol = 2)
+print(p_mgwr)
+```
+
+
+
+
+
+
+
+
