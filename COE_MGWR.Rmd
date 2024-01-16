@@ -83,7 +83,6 @@ Describe datasets here, then import each one below.
 ```{r}
 # Import shapefile
 dat_tracts <- readOGR(dsn = "./Tracts/tl_2010_08_tract10.shp")
-summary(dat_tracts)
 
 # Plot shapefile with base R - this is just to check that it renders correctly
 par(mar=c(0,0,0,0))
@@ -95,7 +94,7 @@ plot(dat_tracts, col="#333333", lwd=0.25, border=0)
 
 This data table contains the 10-year (2008 - 2018) average of total releases in pounds from TRI facilities by census tract in Colorado. We need first ensure that the census tract ID (GEOID) is the correct length. Some states have a GEOID that begins with 0, Colorado being one of them. The problem is that CSV files created using MS Excel (most are) will remove the leading 0 in numbers. We will first make sure that every GEOID in the table is 11 characters long by padding them with a 0 on the left side.
 
-```{r, echo=FALSE}
+```{r}
 dat_tri <- read.csv('./Exposure/avgReleases_tract_CO_2008-2018.csv')
 # Pad GEOID to 11 characters
 dat_tri$GEOID10 <- str_pad(dat_tri$GEOID10, width = 11, side = "left", pad = 0)
@@ -103,7 +102,7 @@ dat_tri$GEOID10 <- str_pad(dat_tri$GEOID10, width = 11, side = "left", pad = 0)
 All GEOIDs are `r unique(nchar(dat_tri$tract_fips10))` characters long. *Note: if this says something other than 11 make sure the chunk above is running correctly.*
 
 ### Confounders
-```{r, echo=FALSE}
+```{r}
 svi <- read.csv('./Confounders/SVI_2018_US.csv') # SVI data for all census tracts in US
 svi$FIPS <- str_pad(svi$FIPS, width = 11, side = "left", pad = 0) # Pad GEOIDs so that they are all 11 characters long
 # unique(nchar(svi$FIPS))
@@ -121,7 +120,7 @@ svi_sub <- svi_sub %>%
 All GEOIDs in the SVI dataset are `r unique(nchar(svi_sub$FIPS))` characters long. *Note: if this says something other than 11 make sure the chunk above is running correctly.*
 
 ### Outcome
-```{r, echo=FALSE}
+```{r}
 outcome <- read.csv('./Outcome/CDPHE_Composite_Selected_Health_Outcome_Dataset_(Census_Tract).csv')
 lwb <- outcome[, c(2, 26:32)] # Subset to only include low birthweight variables and GEOID
 
@@ -130,23 +129,16 @@ lwb$TRACT_FIPS <- str_pad(lwb$TRACT_FIPS, width = 11, side = "left", pad = 0) # 
 
 All GEOIDs in the low birthweight dataset are `r unique(nchar(lwb$TRACT_FIPS))` characters long. *Note: if this says something other than 11 make sure the chunk above is running correctly.*
 
-```{r, echo=FALSE}
+```{r}
 # Combine data tables
 
 # Join data using the dplyr library - this doesn't work on SpatialPolygonDataFrame data types, so convert first
 dat_full <- st_as_sf(dat_tracts)
 
-# Exposure
 dat_full <- dat_full %>%
-  right_join(dat_tri, by = c("GEOID10" = "GEOID10"))
-
-# Outcome
-dat_full <- dat_full %>%
-  right_join(lwb, by = c("GEOID10" = "TRACT_FIPS"))
-
-# Confounders
-dat_full <- dat_full %>%
-  right_join(svi_sub, by = c("GEOID10" = "FIPS"))
+  right_join(dat_tri, by = c("GEOID10" = "GEOID10")) %>% # Exposure
+  right_join(lwb, by = c("GEOID10" = "TRACT_FIPS")) %>% # Outcome
+  right_join(svi_sub, by = c("GEOID10" = "FIPS")) # Confounders
 
 # Create a subset for global models
 global_dat <- dat_full %>%
@@ -160,14 +152,14 @@ global_dat <-
 #     -659
 #   )
 
-
 dat_full <- as(na.omit(dat_full), "Spatial") # Convert dat_full back to spatial - we will use this for the spatial models
 
+summary(dat_full)
 ```
 
 
 ## Global Model
-```{r, echo=FALSE}
+```{r, message=FALSE}
 # fit full model
 lm_full <- lm(LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + EP_NOHSDP + EP_AGE65 + EP_AGE17 + EP_DISABL
                                                + EP_SNGPNT + EP_MINRTY + EP_LIMENG + EP_MUNIT + EP_MOBILE + EP_CROWD
@@ -177,17 +169,14 @@ lm_full <- lm(LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + EP
 summary(lm_full)
 ```
 
-```{r, echo=FALSE}
+```{r, message=FALSE}
 ## Backward selection using model AIC
 lm_red_AIC <- step(lm_full, direction="backward", test="F")
 lm_final <- lm_red_AIC
 summary(lm_final)
-
-# BIC (not shown)
-# step(lm_cchd_full, direction="backward", test="F", k=log(nrow(dat_cchd)))
 ```
 
-```{r, fig.height = 8, fig.width = 8}
+```{r, fig.height = 10, fig.width = 10}
 # Plot correlation matrix of variables from the reduced model
 vars <- c(
   "avgReleasesLb_10yr", "EP_POV", "EP_UNEMP", "EP_PCI", 
@@ -288,7 +277,7 @@ gwr_results_dat$GW.diagnostic
 
 
 ### MGWR
-```{r, echo=FALSE}
+```{r, message=FALSE}
 # Multiscale geographically weighted regression
 # Documentation: https://search.r-project.org/CRAN/refmans/GWmodel/html/gwr.multiscale.html
 mgwr_results_dat_full <- gwr.multiscale(LWB_ADJRATE ~ avgReleasesLb_10yr 
@@ -314,7 +303,7 @@ print(mgwr_results_dat_full)
 
 
 # Model diagnostics
-mgwr_results_dat_full$GW.diagnostic
+print(mgwr_results_dat_full$GW.diagnostic)
 ```
 
 
@@ -346,51 +335,23 @@ summary_table <- data.frame(t(summary_stats))
 print(summary_table)
 ```
 
-```{r}
+```{r, fig.width = 10, fig.height = 4}
 # Boxplots of coefficients
 melt_coefficients <- reshape2::melt(coefficients)
 
 p2 <- ggplot(melt_coefficients, aes(x = fct_reorder(variable, value, .fun = mean), y = value))
 p2 <- p2 + geom_boxplot()
-p2 <- p2 + labs(x = "", y = "") + ggtitle("")
+p2 <- p2 + labs(x = "", y = "Coefficient") + ggtitle("Boxplots of MGWR Coefficients")
 p2 <- p2 + theme(axis.text.x = element_text(angle = 40, hjust = 1))
 p2 <- p2 + geom_hline(yintercept = 0, linetype = "dashed", color = "red")
 
-# Print the modified plot
 print(p2)
 
 ```
 
 ## Mapping Results
 ```{r, fig.width = 8.5, fig.height = 10.5}
-# Plot coefficients
-# Plot function:
-plot.gwr.coefs = function(gwr.model.SDF, variable.name, tvalues) {
-  # determine which observations are significant from via the t-values
-  tval = tvalues
-  insignif = tval >= -1.96 & tval <= 1.96
-  
-  # create the background and main layer with shaded polygons
-  p = tm_shape(gwr.model.SDF) +
-    tm_polygons(variable.name, palette = "RdYlBu", title = variable.name, alpha = 0.7) +
-    tm_borders(lwd = 0.5) +  # Add borders for all polygons
-    
-    tm_layout(legend.outside = TRUE,  # Place legend outside the plot
-              legend.position = c("right", "top"),  # Position the legend to the right
-              legend.outside.size = 0.3,  # Adjust the legend width as needed
-              )  
-  
-  # check if there are any non-empty units for the insignificant observations
-  if (any(insignif)) {
-    # now add the t-values layer
-    p = p +
-      tm_shape(gwr.model.SDF[insignif,]) +  # Use insignif for insignificant observations
-      tm_polygons("black", alpha = 0.75)
-  }
-  
-  return(p)
-}
-
+# Map coefficients
 p1m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "Intercept", mgwr_results_dat_full$SDF$Intercept_TV)
 p2m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "avgReleasesLb_10yr", mgwr_results_dat_full$SDF$avgReleasesLb_10yr_TV)
 p3m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_POV", mgwr_results_dat_full$SDF$EP_POV_TV)
