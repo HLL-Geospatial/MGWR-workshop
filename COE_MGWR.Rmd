@@ -38,6 +38,22 @@ knitr::opts_chunk$set(cache = FALSE)
 ```
 
 ```{r}
+# Installing libraries
+# If you don't have any of the required packages installed, un-comment and run the necessary lines
+# install.packages("rgdal")
+# install.packages("GWmodel")
+# install.packages("ggplot2")
+# install.packages("GGally")
+# install.packages("gridExtra")
+# install.packages("tmap")
+# install.packages("dplyr")
+# install.packages("sf")
+# install.packages("stringr")
+# install.packages("tidyverse")
+# install.packages("Hmisc")
+```
+
+```{r}
 # Import libraries
 library(rgdal)
 library(GWmodel)
