@@ -55,7 +55,7 @@ knitr::opts_chunk$set(cache = FALSE)
 
 ```{r}
 # Import libraries
-library(rgdal)
+#library(rgdal)
 library(GWmodel)
 library(ggplot2)
 library(GGally)
@@ -68,6 +68,7 @@ library(tidyverse)
 library(Hmisc)
 
 source("plotting_functions.R")
+
 ```
 
 # Background
@@ -98,7 +99,7 @@ Describe datasets here, then import each one below.
 
 ```{r}
 # Import shapefile
-dat_tracts <- readOGR(dsn = "./Tracts/tl_2010_08_tract10.shp")
+dat_tracts <- st_read(dsn = "./Tracts/tl_2010_08_tract10.shp")
 
 # Plot shapefile with base R - this is just to check that it renders correctly
 par(mar=c(0,0,0,0))
