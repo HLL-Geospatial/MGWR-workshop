@@ -51,6 +51,10 @@ knitr::opts_chunk$set(cache = FALSE)
 # install.packages("stringr")
 # install.packages("tidyverse")
 # install.packages("Hmisc")
+# install.packages('car')
+# install.packages('Rtools')
+install.packages('nortest')
+
 ```
 
 ```{r}
@@ -66,6 +70,10 @@ library(sf)
 library(stringr)
 library(tidyverse)
 library(Hmisc)
+library(car)
+library(nortest)
+
+
 
 source("plotting_functions.R")
 
@@ -116,7 +124,7 @@ dat_tri <- read.csv('./Exposure/avgReleases_tract_CO_2008-2018.csv')
 # Pad GEOID to 11 characters
 dat_tri$GEOID10 <- str_pad(dat_tri$GEOID10, width = 11, side = "left", pad = 0)
 ```
-All GEOIDs are `r unique(nchar(dat_tri$tract_fips10))` characters long. *Note: if this says something other than 11 make sure the chunk above is running correctly.*
+All GEOIDs are `r unique(nchar(dat_tri$GEOID10))` characters long. *Note: if this says something other than 11 make sure the chunk above is running correctly.*
 
 ### Confounders
 ```{r}
@@ -379,6 +387,7 @@ p7m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_DISABL", mgwr_results_dat_f
 p8m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_MINRTY", mgwr_results_dat_full$SDF$EP_MINRTY_TV)
 p9m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_GROUPQ", mgwr_results_dat_full$SDF$EP_GROUPQ_TV)
 p10m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_UNINSUR", mgwr_results_dat_full$SDF$EP_UNINSUR_TV)
+p11m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_UNEMP", mgwr_results_dat_full$SDF$EP_UNEMP_TV)
 
 p_mgwr <- tmap_arrange(p1m
                      , p2m
@@ -390,6 +399,7 @@ p_mgwr <- tmap_arrange(p1m
                      , p8m
                      , p9m
                      , p10m
+                     , p11m
                      , ncol = 2)
 print(p_mgwr)
 ```
