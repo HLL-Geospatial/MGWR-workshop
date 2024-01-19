@@ -51,10 +51,18 @@ knitr::opts_chunk$set(cache = FALSE)
 # install.packages("stringr")
 # install.packages("tidyverse")
 # install.packages("Hmisc")
+<<<<<<< Updated upstream
 # install.packages('car')
 # install.packages('Rtools')
 install.packages('nortest')
 
+=======
+# install.packages("reshape2")
+# install.packages("car")
+# install.packages("ellipse")
+# install.packages("leaps")
+# install.packages("nortest")
+>>>>>>> Stashed changes
 ```
 
 ```{r}
@@ -70,10 +78,14 @@ library(sf)
 library(stringr)
 library(tidyverse)
 library(Hmisc)
+<<<<<<< Updated upstream
 library(car)
 library(nortest)
 
 
+=======
+library(spdep)
+>>>>>>> Stashed changes
 
 source("plotting_functions.R")
 
@@ -111,7 +123,7 @@ dat_tracts <- st_read(dsn = "./Tracts/tl_2010_08_tract10.shp")
 
 # Plot shapefile with base R - this is just to check that it renders correctly
 par(mar=c(0,0,0,0))
-plot(dat_tracts, col="#333333", lwd=0.25, border=0)
+plot(dat_tracts, col="#333333", lwd=0.25, border=0, max.plot = 1)
 
 ```
 
@@ -231,9 +243,23 @@ lm_diag_plots(lm_red_AIC, sw_plot_set = "simpleAV")
 
 
 For each model: print and interpret model diagnostics and test for spatial autocorrelation.
+
 ```{r}
-# To do: Spatial autocorrelation
+# Spatial autocorrelation of global linear model residuals
+lm_resid_col <- lm_red_AIC$residuals # Make data table of residuals from lm_red_AIC
+dat_full$residuals <- lm_resid_col[as.character(rownames(dat_full@data))] # Append residuals to dat_full by row name
+
+nb <- poly2nb(dat_full, queen = TRUE) # Define neighbors for each polygon
+lw <- nb2listw(nb, style = "U", zero.policy = TRUE) # Assign weights to neighbors
+moran_lm <- moran.mc(dat_full$residuals
+                    , lw
+                    , nsim = 999
+                    , alternative = "two.sided")
+print(rbind("Moran's I statistic: " ,moran_lm$statistic))
+print(rbind("P-value of Moran's I statistic: ", moran_lm$p.value)) 
+
 ```
+The Moran's $I$ statistic of the linear model is `r moran_lm$statistic` and the p-value is `r moran_lm$p.value`. Because the $p-value$ is $<0.05$, we conclude that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current linear model.
 
 ## Local Models
 ### Distance Matrix
@@ -262,9 +288,8 @@ bw <- bw.gwr(LWB_ADJRATE ~ avgReleasesLb_10yr
                          + EP_MINRTY
                          + EP_GROUPQ
                          + EP_UNINSUR
-                         # + ALAND10 # This makes the model get stuck for some reason
            , data = dat_full
-           , approach = "AICc"
+           , approach = "CV"
            , kernel = "gaussian"
            , adaptive = TRUE
            , longlat = TRUE
@@ -285,10 +310,11 @@ gwr_results_dat <- gwr.basic(LWB_ADJRATE ~ avgReleasesLb_10yr
                                          + EP_MINRTY
                                          + EP_GROUPQ
                                          + EP_UNINSUR
+                                         + ALAND10
                            , data = dat_full
                            , bw = bw
                            , dMat = DM
-                           , kernel = "bisquare"
+                           , kernel = "gaussian"
                            , adaptive = TRUE
                            , longlat = TRUE)
 
@@ -297,9 +323,19 @@ gwr_results_dat$GW.diagnostic
 ```
 
 ```{r}
-# Spatial autocorrelation
+# Spatial autocorrelation of basic GWR residuals
+nb <- poly2nb(gwr_results_dat$SDF, queen = TRUE) # Define neighbors for each polygon
+lw <- nb2listw(nb, style = "U", zero.policy = TRUE) # Assign weights to neighbors
+moran_gwr <- moran.mc(gwr_results_dat$SDF$residual
+                    , lw
+                    , nsim = 999
+                    , alternative = "two.sided")
+print(rbind("Moran's I statistic: " ,moran_gwr$statistic))
+print(rbind("P-value of Moran's I statistic: ", moran_gwr$p.value)) 
+
 ```
 
+The Moran's $I$ statistic of the GWR model is `r moran_gwr$statistic` and the p-value is `r moran_gwr$p.value`. Because the $p-value$ is $<0.05$, we conclude that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current local model.
 
 ### MGWR
 ```{r, message=FALSE}
@@ -315,12 +351,11 @@ mgwr_results_dat_full <- gwr.multiscale(LWB_ADJRATE ~ avgReleasesLb_10yr
                                                + EP_MINRTY
                                                + EP_GROUPQ
                                                + EP_UNINSUR
-                                               # + ALAND10
                                       , data = dat_full
-                                      , max.iterations = 2 # Set max iterations higher to optimize model - it's at 2 now to minimize computational burden
-                                      , kernel = "bisquare"
+                                      , max.iterations = 100 # Set max iterations higher to optimize model - it's at 2 now to minimize computational burden
+                                      , kernel = "gaussian"
                                       , adaptive = TRUE
-                                      , criterion = "dCVR"
+                                      , criterion = "CVR"
 )
 
 # Model outputs
@@ -335,8 +370,18 @@ print(mgwr_results_dat_full$GW.diagnostic)
 
 
 ```{r}
-# Spatial autocorrelation
+# Spatial autocorrelation of MGWR residuals
+nb <- poly2nb(mgwr_results_dat_full$SDF, queen = TRUE) # Define neighbors for each polygon
+lw <- nb2listw(nb, style = "U", zero.policy = TRUE) # Assign weights to neighbors
+moran_mgwr <- moran.mc(mgwr_results_dat_full$SDF$residual
+                       , lw
+                       , nsim = 999
+                       , alternative = "two.sided")
+print(rbind("Moran's I statistic: " ,moran_mgwr$statistic))
+print(rbind("P-value of Moran's I statistic: ", moran_mgwr$p.value)) 
+
 ```
+The Moran's $I$ statistic of the linear model is `r moran_mgwr$statistic` and the p-value is `r moran_mgwr$p.value`. Because the $p-value$ is $<0.05$, we conclude that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current local model.
 
 
 ```{r}
