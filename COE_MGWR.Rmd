@@ -54,9 +54,7 @@ knitr::opts_chunk$set(cache = FALSE)
 <<<<<<< Updated upstream
 # install.packages('car')
 # install.packages('Rtools')
-install.packages('nortest')
-
-=======
+# install.packages('nortest')
 # install.packages("reshape2")
 # install.packages("car")
 # install.packages("ellipse")
@@ -81,9 +79,6 @@ library(Hmisc)
 <<<<<<< Updated upstream
 library(car)
 library(nortest)
-
-
-=======
 library(spdep)
 >>>>>>> Stashed changes
 
@@ -335,8 +330,6 @@ print(rbind("P-value of Moran's I statistic: ", moran_gwr$p.value))
 
 ```
 
-The Moran's $I$ statistic of the GWR model is `r moran_gwr$statistic` and the p-value is `r moran_gwr$p.value`. Because the $p-value$ is $<0.05$, we conclude that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current local model.
-
 ### MGWR
 ```{r, message=FALSE}
 # Multiscale geographically weighted regression
@@ -352,8 +345,12 @@ mgwr_results_dat_full <- gwr.multiscale(LWB_ADJRATE ~ avgReleasesLb_10yr
                                                + EP_GROUPQ
                                                + EP_UNINSUR
                                       , data = dat_full
-                                      , max.iterations = 100 # Set max iterations higher to optimize model - it's at 2 now to minimize computational burden
+                                      , max.iterations = 1 # Set max iterations higher to optimize model - it's at 2 now to minimize computational burden
                                       , kernel = "gaussian"
+                                      # , kernel = "exponential"
+                                      # , kernel = "bisquare"
+                                      # , kernel = "tricube"
+                                      # , kernel = "boxcar"
                                       , adaptive = TRUE
                                       , criterion = "CVR"
 )
