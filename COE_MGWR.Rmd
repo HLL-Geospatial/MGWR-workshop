@@ -51,7 +51,6 @@ knitr::opts_chunk$set(cache = FALSE)
 # install.packages("stringr")
 # install.packages("tidyverse")
 # install.packages("Hmisc")
-<<<<<<< Updated upstream
 # install.packages('car')
 # install.packages('Rtools')
 # install.packages('nortest')
@@ -60,7 +59,6 @@ knitr::opts_chunk$set(cache = FALSE)
 # install.packages("ellipse")
 # install.packages("leaps")
 # install.packages("nortest")
->>>>>>> Stashed changes
 ```
 
 ```{r}
@@ -76,11 +74,9 @@ library(sf)
 library(stringr)
 library(tidyverse)
 library(Hmisc)
-<<<<<<< Updated upstream
 library(car)
 library(nortest)
 library(spdep)
->>>>>>> Stashed changes
 
 source("plotting_functions.R")
 
@@ -127,7 +123,7 @@ plot(dat_tracts, col="#333333", lwd=0.25, border=0, max.plot = 1)
 This data table contains the 10-year (2008 - 2018) average of total releases in pounds from TRI facilities by census tract in Colorado. We need first ensure that the census tract ID (GEOID) is the correct length. Some states have a GEOID that begins with 0, Colorado being one of them. The problem is that CSV files created using MS Excel (most are) will remove the leading 0 in numbers. We will first make sure that every GEOID in the table is 11 characters long by padding them with a 0 on the left side.
 
 ```{r}
-dat_tri <- read.csv('./Exposure/avgReleases_tract_CO_2008-2018.csv')
+dat_tri <- read.csv('./Exposure/avgReleases_tract_popCenter_50km_CO_2008-2018.csv')
 # Pad GEOID to 11 characters
 dat_tri$GEOID10 <- str_pad(dat_tri$GEOID10, width = 11, side = "left", pad = 0)
 ```
@@ -193,9 +189,7 @@ summary(dat_full)
 ## Global Model
 ```{r, message=FALSE}
 # fit full model
-lm_full <- lm(LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + EP_NOHSDP + EP_AGE65 + EP_AGE17 + EP_DISABL
-                                               + EP_SNGPNT + EP_MINRTY + EP_LIMENG + EP_MUNIT + EP_MOBILE + EP_CROWD
-                                               + EP_NOVEH + EP_GROUPQ + EP_UNINSUR
+lm_full <- lm(LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + EP_NOHSDP + EP_AGE65 + EP_AGE17 + EP_DISABL + EP_SNGPNT + EP_MINRTY + EP_LIMENG + EP_MUNIT + EP_MOBILE + EP_CROWD + EP_NOVEH + EP_GROUPQ + EP_UNINSUR
               , data = global_dat)
 
 summary(lm_full)
@@ -211,9 +205,9 @@ summary(lm_final)
 ```{r, fig.height = 10, fig.width = 10}
 # Plot correlation matrix of variables from the reduced model
 vars <- c(
-  "avgReleasesLb_10yr", "EP_POV", "EP_UNEMP", "EP_PCI", 
-  "EP_NOHSDP", "EP_AGE17", "EP_DISABL", "EP_MINRTY", 
-  "EP_GROUPQ", "EP_UNINSUR"
+  "avgReleasesLb_10yr", "EP_POV", "EP_UNEMP",
+    "EP_PCI", "EP_NOHSDP", "EP_AGE17", "EP_DISABL", "EP_MINRTY", "EP_MOBILE", 
+    "EP_GROUPQ", "EP_UNINSUR"
 )
 
 # Create a subset of 'global_dat' with selected variables
@@ -254,7 +248,7 @@ print(rbind("Moran's I statistic: " ,moran_lm$statistic))
 print(rbind("P-value of Moran's I statistic: ", moran_lm$p.value)) 
 
 ```
-The Moran's $I$ statistic of the linear model is `r moran_lm$statistic` and the p-value is `r moran_lm$p.value`. Because the $p-value$ is $<0.05$, we conclude that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current linear model.
+The Moran's $I$ statistic of the linear model is `r moran_lm$statistic %>% signif(3)` and the p-value is `r moran_lm$p.value %>% signif(3)`. Because the $p-value$ is $<0.05$, we can conclude at a 95% CI that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current local model.
 
 ## Local Models
 ### Distance Matrix
@@ -329,6 +323,7 @@ print(rbind("Moran's I statistic: " ,moran_gwr$statistic))
 print(rbind("P-value of Moran's I statistic: ", moran_gwr$p.value)) 
 
 ```
+The Moran's $I$ statistic of the GWR model is `r moran_gwr$statistic %>% signif(3)` and the p-value is `r moran_gwr$p.value %>% signif(3)`. Because the $p-value$ is $<0.05$, we can conclude at a 95% CI that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current local model.
 
 ### MGWR
 ```{r, message=FALSE}
@@ -346,11 +341,11 @@ mgwr_results_dat_full <- gwr.multiscale(LWB_ADJRATE ~ avgReleasesLb_10yr
                                                + EP_UNINSUR
                                       , data = dat_full
                                       , max.iterations = 1 # Set max iterations higher to optimize model - it's at 2 now to minimize computational burden
-                                      , kernel = "gaussian"
-                                      # , kernel = "exponential"
-                                      # , kernel = "bisquare"
-                                      # , kernel = "tricube"
-                                      # , kernel = "boxcar"
+                                      # , kernel = "gaussian" # wgt = exp(-.5*(vdist/bw)^2);
+                                      , kernel = "exponential" # wgt = exp(-vdist/bw);
+                                      # , kernel = "bisquare" # wgt = (1-(vdist/bw)^2)^2 if vdist < bw, wgt=0 otherwise;
+                                      # , kernel = "tricube" # wgt = (1-(vdist/bw)^3)^3 if vdist < bw, wgt=0 otherwise;
+                                      # , kernel = "boxcar" # wgt=1 if dist < bw, wgt=0 otherwise
                                       , adaptive = TRUE
                                       , criterion = "CVR"
 )
@@ -362,8 +357,6 @@ print(mgwr_results_dat_full)
 # Model diagnostics
 print(mgwr_results_dat_full$GW.diagnostic)
 ```
-
-
 
 
 ```{r}
@@ -378,75 +371,54 @@ print(rbind("Moran's I statistic: " ,moran_mgwr$statistic))
 print(rbind("P-value of Moran's I statistic: ", moran_mgwr$p.value)) 
 
 ```
-The Moran's $I$ statistic of the linear model is `r moran_mgwr$statistic` and the p-value is `r moran_mgwr$p.value`. Because the $p-value$ is $<0.05$, we conclude that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current local model.
 
+The Moran's $I$ statistic of the multiscale GWR model is `r moran_mgwr$statistic %>% signif(3)` and the p-value is `r moran_mgwr$p.value %>% signif(3)`. Because the $p-value$ is $>0.05$, we can conclude at a 95% CI that the residuals are not significantly spatially autocorrelated, meaning that the model is correctly specified in terms of lurking spatial relationships.
 
-```{r}
-#Plot neighborhood sizes (bandwidths)
-```
-
-```{r}
-# Summary statistics of coefficients
-coefficients <- data.frame(mgwr_results_dat_full$SDF[, 2:11])
-summary_stats <- apply(coefficients, 2, function(x) {
-  c(
-    min = round(min(x, na.rm = TRUE), 4),
-    q1 = round(quantile(x, 0.25, na.rm = TRUE), 4),
-    median = round(median(x, na.rm = TRUE), 4),
-    q3 = round(quantile(x, 0.75, na.rm = TRUE), 4),
-    max = round(max(x, na.rm = TRUE), 4),
-    sd = round(sd(x, na.rm = TRUE), 4)
-  )
-})
-summary_table <- data.frame(t(summary_stats))
-print(summary_table)
-```
 
 ```{r, fig.width = 10, fig.height = 4}
 # Boxplots of coefficients
+coefficients <- data.frame(mgwr_results_dat_full$SDF[, 2:11])
 melt_coefficients <- reshape2::melt(coefficients)
 
-p2 <- ggplot(melt_coefficients, aes(x = fct_reorder(variable, value, .fun = mean), y = value))
-p2 <- p2 + geom_boxplot()
-p2 <- p2 + labs(x = "", y = "Coefficient") + ggtitle("Boxplots of MGWR Coefficients")
-p2 <- p2 + theme(axis.text.x = element_text(angle = 40, hjust = 1))
-p2 <- p2 + geom_hline(yintercept = 0, linetype = "dashed", color = "red")
+p_mgwr_bp <- ggplot(melt_coefficients, aes(x = fct_reorder(variable, value, .fun = mean), y = value))
+p_mgwr_bp <- p_mgwr_bp + geom_boxplot()
+p_mgwr_bp <- p_mgwr_bp + labs(x = "", y = "Coefficient") + ggtitle("Boxplots of MGWR Coefficients")
+p_mgwr_bp <- p_mgwr_bp + theme(axis.text.x = element_text(angle = 40, hjust = 1))
+p_mgwr_bp <- p_mgwr_bp + geom_hline(yintercept = 0, linetype = "dashed", color = "red")
 
-print(p2)
+print(p_mgwr_bp)
 
 ```
 
 ## Mapping Results
 ```{r, fig.width = 8.5, fig.height = 10.5}
 # Map coefficients
-p1m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "Intercept", mgwr_results_dat_full$SDF$Intercept_TV)
-p2m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "avgReleasesLb_10yr", mgwr_results_dat_full$SDF$avgReleasesLb_10yr_TV)
-p3m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_POV", mgwr_results_dat_full$SDF$EP_POV_TV)
-p4m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_PCI", mgwr_results_dat_full$SDF$EP_PCI_TV)
-p5m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_NOHSDP", mgwr_results_dat_full$SDF$EP_NOHSDP_TV)
-p6m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_AGE17", mgwr_results_dat_full$SDF$EP_AGE17_TV)
-p7m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_DISABL", mgwr_results_dat_full$SDF$EP_DISABL_TV)
-p8m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_MINRTY", mgwr_results_dat_full$SDF$EP_MINRTY_TV)
-p9m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_GROUPQ", mgwr_results_dat_full$SDF$EP_GROUPQ_TV)
-p10m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_UNINSUR", mgwr_results_dat_full$SDF$EP_UNINSUR_TV)
-p11m <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_UNEMP", mgwr_results_dat_full$SDF$EP_UNEMP_TV)
+p1_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "Intercept", mgwr_results_dat_full$SDF$Intercept_TV)
+p2_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "avgReleasesLb_10yr", mgwr_results_dat_full$SDF$avgReleasesLb_10yr_TV)
+p3_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_POV", mgwr_results_dat_full$SDF$EP_POV_TV)
+p4_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_PCI", mgwr_results_dat_full$SDF$EP_PCI_TV)
+p5_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_NOHSDP", mgwr_results_dat_full$SDF$EP_NOHSDP_TV)
+p6_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_AGE17", mgwr_results_dat_full$SDF$EP_AGE17_TV)
+p7_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_DISABL", mgwr_results_dat_full$SDF$EP_DISABL_TV)
+p8_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_MINRTY", mgwr_results_dat_full$SDF$EP_MINRTY_TV)
+p9_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_GROUPQ", mgwr_results_dat_full$SDF$EP_GROUPQ_TV)
+p10_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_UNINSUR", mgwr_results_dat_full$SDF$EP_UNINSUR_TV)
+p11_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "EP_UNEMP", mgwr_results_dat_full$SDF$EP_UNEMP_TV)
 
-p_mgwr <- tmap_arrange(p1m
-                     , p2m
-                     , p3m
-                     , p4m
-                     , p5m
-                     , p6m
-                     , p7m
-                     , p8m
-                     , p9m
-                     , p10m
-                     , p11m
+p_mgwr <- tmap_arrange(p1_mgwr
+                     , p2_mgwr
+                     , p3_mgwr
+                     , p4_mgwr
+                     , p5_mgwr
+                     , p6_mgwr
+                     , p7_mgwr
+                     , p8_mgwr
+                     , p9_mgwr
+                     , p10_mgwr
+                     , p11_mgwr
                      , ncol = 2)
 print(p_mgwr)
 ```
-
-
 
 
 
