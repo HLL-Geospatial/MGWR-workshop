@@ -1,0 +1,1872 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  12pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=0.25in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Introduction to Multiscale Geographic Weighted Regressions (MGWR)},
+  pdfauthor={Daniel Beene \& Theodros Woldeyohannes},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Introduction to Multiscale Geographic Weighted Regressions
+(MGWR)}
+\author{Daniel Beene \& Theodros Woldeyohannes}
+\date{January 29, 2024}
+
+\begin{document}
+\maketitle
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Installing libraries}
+\CommentTok{\# If you don\textquotesingle{}t have any of the required packages installed, un{-}comment and run the necessary lines}
+\CommentTok{\# install.packages("rgdal")}
+\CommentTok{\# install.packages("GWmodel")}
+\CommentTok{\# install.packages("ggplot2")}
+\CommentTok{\# install.packages("GGally")}
+\CommentTok{\# install.packages("gridExtra")}
+\CommentTok{\# install.packages("tmap")}
+\CommentTok{\# install.packages("dplyr")}
+\CommentTok{\# install.packages("sf")}
+\CommentTok{\# install.packages("stringr")}
+\CommentTok{\# install.packages("tidyverse")}
+\CommentTok{\# install.packages("Hmisc")}
+\CommentTok{\# install.packages("reshape2")}
+\CommentTok{\# install.packages("car")}
+\CommentTok{\# install.packages("ellipse")}
+\CommentTok{\# install.packages("leaps")}
+\CommentTok{\# install.packages("nortest")}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Import libraries}
+\FunctionTok{library}\NormalTok{(GWmodel)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(GGally)}
+\FunctionTok{library}\NormalTok{(gridExtra)}
+\FunctionTok{library}\NormalTok{(tmap)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(sf)}
+\FunctionTok{library}\NormalTok{(stringr)}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(Hmisc)}
+\FunctionTok{library}\NormalTok{(car)}
+\FunctionTok{library}\NormalTok{(nortest)}
+\FunctionTok{library}\NormalTok{(spdep)}
+
+\CommentTok{\# Import plotting functions}
+\FunctionTok{source}\NormalTok{(}\StringTok{"plotting\_functions.R"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{background-geographic-information-systems-gis-provide-versatile-tools-for-uncovering-spatial-patterns-of-public-health-and-environmental-justice-ej-issues-at-multiple-scales-within-the-exposome.there-are-many-open-source-gis-platforms-that-allow-for-cost-effective-and-equitable-integration-of-gis-tools-into-data-analysis-workflows.-with-open-source-gis-public-health-researchers-can-effectively-collaborate-and-easily-share-reproducible-methodologies-and-findings-helping-to-foster-more-inclusive-and-innovative-approaches-to-cross-cutting-health-challenges.}{%
+\subsubsection{BACKGROUND: Geographic Information Systems (GIS) provide
+versatile tools for uncovering spatial patterns of public health and
+environmental justice (EJ) issues at multiple scales within the
+exposome.There are many open-source GIS platforms that allow for
+cost-effective and equitable integration of GIS tools into data analysis
+workflows. With open-source GIS, public health researchers can
+effectively collaborate and easily share reproducible methodologies and
+findings, helping to foster more inclusive and innovative approaches to
+cross-cutting health
+challenges.}\label{background-geographic-information-systems-gis-provide-versatile-tools-for-uncovering-spatial-patterns-of-public-health-and-environmental-justice-ej-issues-at-multiple-scales-within-the-exposome.there-are-many-open-source-gis-platforms-that-allow-for-cost-effective-and-equitable-integration-of-gis-tools-into-data-analysis-workflows.-with-open-source-gis-public-health-researchers-can-effectively-collaborate-and-easily-share-reproducible-methodologies-and-findings-helping-to-foster-more-inclusive-and-innovative-approaches-to-cross-cutting-health-challenges.}}
+
+In this workshop, you will be introduced to open-source GIS using R, as
+well as techniques for leveraging GIS tools and spatial data to advance
+public health research related to the plural environmental health
+effects of climate change in EJ communities. By participating in this
+workshop, you will learn the basics of GIS data-structures, loading and
+visualizing spatial data, and spatial relationships in regression
+analyses.
+
+\hypertarget{modeling-modeling-at-its-most-simple-is-to-use-of-mathematics-and-statistical-assumptions-on-sample-data-to-make-predictions-about-the-real-world.-geospatial-modeling-as-performed-through-gis-adds-the-assumption-that-spatial-patterns-in-the-data-and-locations-of-observations-allows-us-to-uncover-relationships-that-may-otherwise-go-missed.-geospatial-modeling-has-applications-in-diverse-topics-from-the-analysis-of-geomorphic-features-and-physical-processes-to-logistics-and-supply-chains.-one-domain-of-study-that-can-be-enhanced-through-geospatial-modeling-is-public-health-and-epidemology-in-which-associations-between-disease-outcomes-and-predictor-variables-can-be-viewed-as-inherently-spatial-processes.-to-understand-the-nuance-of-geospatial-modeling-as-it-relates-to-public-health-we-must-first-go-over-the-distinction-between-global-and-local-models.}{%
+\subsubsection{MODELING: Modeling, at its most simple, is to use of
+mathematics and statistical assumptions on sample data to make
+predictions about the real world. Geospatial modeling, as performed
+through GIS, adds the assumption that spatial patterns in the data and
+locations of observations allows us to uncover relationships that may
+otherwise go missed. Geospatial modeling has applications in diverse
+topics from the analysis of geomorphic features and physical processes
+to logistics and supply chains. One domain of study that can be enhanced
+through geospatial modeling is public health and epidemology, in which
+associations between disease outcomes and predictor variables can be
+viewed as inherently spatial processes. To understand the nuance of
+geospatial modeling as it relates to public health, we must first go
+over the distinction between global and local
+models.}\label{modeling-modeling-at-its-most-simple-is-to-use-of-mathematics-and-statistical-assumptions-on-sample-data-to-make-predictions-about-the-real-world.-geospatial-modeling-as-performed-through-gis-adds-the-assumption-that-spatial-patterns-in-the-data-and-locations-of-observations-allows-us-to-uncover-relationships-that-may-otherwise-go-missed.-geospatial-modeling-has-applications-in-diverse-topics-from-the-analysis-of-geomorphic-features-and-physical-processes-to-logistics-and-supply-chains.-one-domain-of-study-that-can-be-enhanced-through-geospatial-modeling-is-public-health-and-epidemology-in-which-associations-between-disease-outcomes-and-predictor-variables-can-be-viewed-as-inherently-spatial-processes.-to-understand-the-nuance-of-geospatial-modeling-as-it-relates-to-public-health-we-must-first-go-over-the-distinction-between-global-and-local-models.}}
+
+\hypertarget{global-models-in-the-context-of-spatial-statistics-a-global-model-considers-the-relationships-between-all-dependent-and-independent-variables-across-the-entire-study-extent-with-the-assumption-that-observed-relationships-hold-true-at-all-locations-within-the-extent.-the-implications-of-these-assumptions-are-that-data-from-different-locations-within-a-model-can-be-used-with-equal-weighting-allowing-for-the-estimation-of-a-single-parameter-for-each-relationship-being-modeled.-global-models-have-been-the-standard-of-statistical-analysis-until-relatively-recently.-geographers-have-pointed-out-for-some-time-that-the-assumptions-of-global-models-have-flaws-especially-when-examining-complex-relationships.-for-example-simpsons-paradox-also-known-as-the-ecological-fallicy-is-when-a-relationship-observed-at-a-certain-scale-is-assumed-to-hold-true-at-another-scale.-in-other-words-a-relationship-assumed-to-hold-true-across-an-entire-study-extent-may-infact-vary-across-localized-areas-of-the-extent.-this-is-where-local-models-come-into-play.}{%
+\subsubsection{GLOBAL MODELS: In the context of spatial statistics, a
+global model considers the relationships between all dependent and
+independent variables across the entire study extent, with the
+assumption that observed relationships hold true at all locations within
+the extent. The implications of these assumptions are that data from
+different locations within a model can be used with equal weighting,
+allowing for the estimation of a single parameter for each relationship
+being modeled. Global models have been the standard of statistical
+analysis until relatively recently. Geographers have pointed out for
+some time that the assumptions of global models have flaws, especially
+when examining complex relationships. For example, Simpson's paradox,
+also known as the ecological fallicy, is when a relationship observed at
+a certain scale is assumed to hold true at another scale. In other
+words, a relationship assumed to hold true across an entire study extent
+may infact vary across localized areas of the extent. This is where
+local models come into
+play.}\label{global-models-in-the-context-of-spatial-statistics-a-global-model-considers-the-relationships-between-all-dependent-and-independent-variables-across-the-entire-study-extent-with-the-assumption-that-observed-relationships-hold-true-at-all-locations-within-the-extent.-the-implications-of-these-assumptions-are-that-data-from-different-locations-within-a-model-can-be-used-with-equal-weighting-allowing-for-the-estimation-of-a-single-parameter-for-each-relationship-being-modeled.-global-models-have-been-the-standard-of-statistical-analysis-until-relatively-recently.-geographers-have-pointed-out-for-some-time-that-the-assumptions-of-global-models-have-flaws-especially-when-examining-complex-relationships.-for-example-simpsons-paradox-also-known-as-the-ecological-fallicy-is-when-a-relationship-observed-at-a-certain-scale-is-assumed-to-hold-true-at-another-scale.-in-other-words-a-relationship-assumed-to-hold-true-across-an-entire-study-extent-may-infact-vary-across-localized-areas-of-the-extent.-this-is-where-local-models-come-into-play.}}
+
+\hypertarget{local-models-in-the-context-of-spatial-statistics-a-local-model-considers-the-relationships-between-dependent-and-independent-variables-or-a-sub-set-of-these-variables-across-a-localized-area-of-the-study-extent.-we-refer-to-these-localized-areas-as-neighborhoods.-local-models-assume-that-observed-relationships-only-hold-within-the-neighborhood-and-may-vary-in-different-neighborhoods.-this-allows-for-local-models-to-potentially-model-processes-that-vary-over-space-with-greater-accuracy.-this-is-valuable-in-the-realm-of-public-health-in-which-associations-between-environmental-exposure-human-behavior-and-disease-outcomes-are-complex-and-show-non-linear-spatially-heterogenious-relationships.}{%
+\subsubsection{LOCAL MODELS: In the context of spatial statistics, a
+local model considers the relationships between dependent and
+independent variables (or a sub-set of these variables) across a
+localized area of the study extent. We refer to these localized areas as
+`neighborhoods'. Local models assume that observed relationships only
+hold within the neighborhood, and may vary in different neighborhoods.
+This allows for local models to potentially model processes that vary
+over space with greater accuracy. This is valuable in the realm of
+public health, in which associations between environmental exposure,
+human behavior, and disease outcomes are complex and show non-linear,
+spatially heterogenious
+relationships.}\label{local-models-in-the-context-of-spatial-statistics-a-local-model-considers-the-relationships-between-dependent-and-independent-variables-or-a-sub-set-of-these-variables-across-a-localized-area-of-the-study-extent.-we-refer-to-these-localized-areas-as-neighborhoods.-local-models-assume-that-observed-relationships-only-hold-within-the-neighborhood-and-may-vary-in-different-neighborhoods.-this-allows-for-local-models-to-potentially-model-processes-that-vary-over-space-with-greater-accuracy.-this-is-valuable-in-the-realm-of-public-health-in-which-associations-between-environmental-exposure-human-behavior-and-disease-outcomes-are-complex-and-show-non-linear-spatially-heterogenious-relationships.}}
+
+\hypertarget{spatial-autocorrelation-spatial-autocorrelation-is-when-data-from-locations-near-one-another-in-space-are-more-likely-to-be-similar-i.e.-are-more-correlated-than-data-from-locations-remote-from-one-another.-spatial-autocorrelation-can-be-thought-of-as-a-double-edged-sword.-from-a-geographic-perspective-we-expect-that-raw-data-will-show-spatial-autocorrelation-and-use-this-to-our-advantage.-for-example-there-is-a-notion-in-geography-known-as-toblers-law-in-which-it-is-assumed-that-objects-in-space-closer-to-each-other-are-more-likely-to-be-related-than-objects-that-are-farther-apart.-when-examining-processes-that-vary-over-space-we-assume-that-data-representing-these-processes-will-be-non-randomly-distributed-i.e.-show-spatial-autocorrelation-and-that-in-assesing-these-distributions-through-spatial-statistics-we-can-infer-otherwise-hidden-properties-of-the-process.}{%
+\subsubsection{SPATIAL AUTOCORRELATION: Spatial Autocorrelation is when
+data from locations near one another in space are more likely to be
+similar (i.e.~are more correlated) than data from locations remote from
+one another. Spatial Autocorrelation can be thought of as a double-edged
+sword. From a geographic perspective, we expect that raw data will show
+spatial autocorrelation, and use this to our advantage. For example,
+there is a notion in geography known as Tobler's Law, in which it is
+assumed that objects in space closer to each other are more likely to be
+related than objects that are farther apart. When examining processes
+that vary over space, we assume that data representing these processes
+will be non-randomly distributed (i.e.~show spatial autocorrelation),
+and that in assesing these distributions through spatial statistics, we
+can infer otherwise hidden properties of the
+process.}\label{spatial-autocorrelation-spatial-autocorrelation-is-when-data-from-locations-near-one-another-in-space-are-more-likely-to-be-similar-i.e.-are-more-correlated-than-data-from-locations-remote-from-one-another.-spatial-autocorrelation-can-be-thought-of-as-a-double-edged-sword.-from-a-geographic-perspective-we-expect-that-raw-data-will-show-spatial-autocorrelation-and-use-this-to-our-advantage.-for-example-there-is-a-notion-in-geography-known-as-toblers-law-in-which-it-is-assumed-that-objects-in-space-closer-to-each-other-are-more-likely-to-be-related-than-objects-that-are-farther-apart.-when-examining-processes-that-vary-over-space-we-assume-that-data-representing-these-processes-will-be-non-randomly-distributed-i.e.-show-spatial-autocorrelation-and-that-in-assesing-these-distributions-through-spatial-statistics-we-can-infer-otherwise-hidden-properties-of-the-process.}}
+
+On the other-hand, significant spatial autocorrelation of the residuals
+of a spatial statistical test indicates that the model we are using is
+misspecified and poorly calibrated, indicating that we are missing
+significant spatial relationships in the data. Through this workshop we
+will show how traditional global-linear regressions miss these spatial
+relationships, and how such relationships can be better captured through
+spatial and localized geographically weighted regressions.
+
+\hypertarget{geographically-weighted-regression-gwr-gwr-is-a-spatial-regression-technique-that-evaluates-a-local-model-of-the-variable-or-process-you-are-trying-to-understand-or-predict-by-fitting-a-regression-equation-to-every-feature-in-the-dataset.-while-gwr-is-a-local-model-it-does-not-assess-the-spatial-scale-at-which-processes-may-vary.-in-other-words-it-assumes-variance-across-an-extent-but-that-all-variances-exist-at-the-same-scale-across-neighborhoods.}{%
+\subsubsection{GEOGRAPHICALLY WEIGHTED REGRESSION (GWR): GWR is a
+spatial regression technique that evaluates a local model of the
+variable or process you are trying to understand or predict by fitting a
+regression equation to every feature in the dataset. While GWR is a
+local model, it does not assess the spatial scale at which processes may
+vary. In other words it assumes variance across an extent, but that all
+variances exist at the same scale across
+neighborhoods.}\label{geographically-weighted-regression-gwr-gwr-is-a-spatial-regression-technique-that-evaluates-a-local-model-of-the-variable-or-process-you-are-trying-to-understand-or-predict-by-fitting-a-regression-equation-to-every-feature-in-the-dataset.-while-gwr-is-a-local-model-it-does-not-assess-the-spatial-scale-at-which-processes-may-vary.-in-other-words-it-assumes-variance-across-an-extent-but-that-all-variances-exist-at-the-same-scale-across-neighborhoods.}}
+
+\hypertarget{multiscale-geographically-weighted-regression-mgwrmgwr-builds-upon-the-gwr-technique-in-which-regression-coefficients-of-explanatory-variables-can-vary-across-space.-this-allows-for-the-mgwr-framework-to-examine-both-spatial-variability-and-scalar-effects-simulatensouly-in-local-modeling.}{%
+\subsubsection{MULTISCALE GEOGRAPHICALLY WEIGHTED REGRESSION (MGWR):MGWR
+builds upon the GWR technique, in which regression coefficients of
+explanatory variables can vary across space. This allows for the MGWR
+framework to examine both spatial variability and scalar effects
+simulatensouly in local
+modeling.}\label{multiscale-geographically-weighted-regression-mgwrmgwr-builds-upon-the-gwr-technique-in-which-regression-coefficients-of-explanatory-variables-can-vary-across-space.-this-allows-for-the-mgwr-framework-to-examine-both-spatial-variability-and-scalar-effects-simulatensouly-in-local-modeling.}}
+
+\hypertarget{other-modeling-approaches-various-other-local-spatial-models-exist-such-as-bayesian-spatially-varying-coefficients-models-spatial-filtering-methods-and-spatially-clustered-coefficient-models.-additionally-other-kinds-of-modeling-approaches-such-as-machine-learning-based-models-can-be-used-to-assess-spatial-relationships-in-data.-this-workshop-will-focus-on-the-mgwr-framework-given-its-computational-efficiency-robust-support-in-r-and-widespread-use.}{%
+\subsubsection{OTHER MODELING APPROACHES: Various other local spatial
+models exist, such as Bayesian Spatially Varying Coefficients Models,
+Spatial Filtering methods, and Spatially Clustered Coefficient models.
+Additionally, other kinds of modeling approaches, such as machine
+learning based models, can be used to assess spatial relationships in
+data. This workshop will focus on the MGWR framework, given its
+computational efficiency, robust support in R, and widespread
+use.}\label{other-modeling-approaches-various-other-local-spatial-models-exist-such-as-bayesian-spatially-varying-coefficients-models-spatial-filtering-methods-and-spatially-clustered-coefficient-models.-additionally-other-kinds-of-modeling-approaches-such-as-machine-learning-based-models-can-be-used-to-assess-spatial-relationships-in-data.-this-workshop-will-focus-on-the-mgwr-framework-given-its-computational-efficiency-robust-support-in-r-and-widespread-use.}}
+
+\hypertarget{example---low-birthweight-rates-in-this-workshop-you-will-examine-rates-of-low-birth-weight-in-the-state-of-colorado-in-relation-to-pollution-sources-and-socio-economic-co-variates.-our-main-objective-is-to-demonstrate-how-spatial-relationships-may-be-lurking-variables-in-regression-models.}{%
+\subsubsection{EXAMPLE - Low Birthweight Rates: In this workshop, you
+will examine rates of low birth weight in the state of Colorado in
+relation to pollution sources and socio-economic co-variates. Our main
+objective is to demonstrate how spatial relationships may be lurking
+variables in regression
+models.}\label{example---low-birthweight-rates-in-this-workshop-you-will-examine-rates-of-low-birth-weight-in-the-state-of-colorado-in-relation-to-pollution-sources-and-socio-economic-co-variates.-our-main-objective-is-to-demonstrate-how-spatial-relationships-may-be-lurking-variables-in-regression-models.}}
+
+\hypertarget{data-this-workshop-uses-the-below-data-sets-aggregated-to-census-tracts-across-a-study-extent-of-the-state-of-colorado}{%
+\subsubsection{DATA: This workshop uses the below data-sets aggregated
+to census-tracts across a study extent of the state of
+Colorado:}\label{data-this-workshop-uses-the-below-data-sets-aggregated-to-census-tracts-across-a-study-extent-of-the-state-of-colorado}}
+
+\emph{dependent variable} - rate of low birthweight (disease outcome)
+\emph{independent variable} - 10-year average (2008 - 2018) of total
+releases in pounds from Toxics Release Inventory (TRI) facilities
+(potential environmental exposure) \emph{co-variates} - potential
+confounders from the Social Vulnerability Index (SVI): poverty,
+unemployment, income, graduation rates, age, disability, single parent
+households, race/ethnicity, English proficiency, housing,
+transportation, insurance
+
+\hypertarget{gis-data-format-raw-data-is-imported-in-the-form-of-spreadsheets-in-which-observations-have-locational-identifiers.-we-then-put-this-data-into-a-gis-environment-and-spatialize-it-by-joining-the-data-to-spatial-objects.-for-this-workshop-we-will-use-vector-data.-vector-data-can-simply-be-thought-of-as-polygons-shapes-with-locational-information.-in-other-words-areas-projected-onto-the-surface-of-the-earth.-for-this-workshop-we-will-use-vector-data-in-shapefile-format.-in-the-case-of-this-workshop-these-shapes-represent-the-census-tracts-of-the-state-of-colorado.-by-joining-the-raw-data-to-census-tracts-we-can-use-spatial-statistics-to-analyze-the-spatial-relationships-within-the-data.}{%
+\subsubsection{\texorpdfstring{GIS DATA-FORMAT: Raw data is imported in
+the form of spreadsheets, in which observations have locational
+identifiers. We then put this data into a GIS environment and spatialize
+it by joining the data to spatial objects. For this workshop we will use
+vector data. Vector data can simply be thought of as polygons (shapes)
+with locational information. In other words, areas projected onto the
+surface of the Earth. For this workshop we will use vector data in
+\emph{shapefile} format. In the case of this workshop, these shapes
+represent the census tracts of the state of Colorado. By joining the raw
+data to census tracts, we can use spatial statistics to analyze the
+spatial relationships within the
+data.}{GIS DATA-FORMAT: Raw data is imported in the form of spreadsheets, in which observations have locational identifiers. We then put this data into a GIS environment and spatialize it by joining the data to spatial objects. For this workshop we will use vector data. Vector data can simply be thought of as polygons (shapes) with locational information. In other words, areas projected onto the surface of the Earth. For this workshop we will use vector data in shapefile format. In the case of this workshop, these shapes represent the census tracts of the state of Colorado. By joining the raw data to census tracts, we can use spatial statistics to analyze the spatial relationships within the data.}}\label{gis-data-format-raw-data-is-imported-in-the-form-of-spreadsheets-in-which-observations-have-locational-identifiers.-we-then-put-this-data-into-a-gis-environment-and-spatialize-it-by-joining-the-data-to-spatial-objects.-for-this-workshop-we-will-use-vector-data.-vector-data-can-simply-be-thought-of-as-polygons-shapes-with-locational-information.-in-other-words-areas-projected-onto-the-surface-of-the-earth.-for-this-workshop-we-will-use-vector-data-in-shapefile-format.-in-the-case-of-this-workshop-these-shapes-represent-the-census-tracts-of-the-state-of-colorado.-by-joining-the-raw-data-to-census-tracts-we-can-use-spatial-statistics-to-analyze-the-spatial-relationships-within-the-data.}}
+
+\hypertarget{r-cheat-codes-r-is-an-extensive-coding-environment.-it-would-be-impossible-to-explain-every-command-in-this-workshop.-the-intent-of-this-workshop-is-to-introduce-you-to-performing-spatial-data-analysis-in-r-and-give-you-to-the-background-to-learn-and-apply-these-techniques-in-your-own-research.}{%
+\subsubsection{R CHEAT CODES: R is an extensive coding environment. It
+would be impossible to explain every command in this workshop. The
+intent of this workshop is to introduce you to performing spatial
+data-analysis in R, and give you to the background to learn and apply
+these techniques in your own
+research.}\label{r-cheat-codes-r-is-an-extensive-coding-environment.-it-would-be-impossible-to-explain-every-command-in-this-workshop.-the-intent-of-this-workshop-is-to-introduce-you-to-performing-spatial-data-analysis-in-r-and-give-you-to-the-background-to-learn-and-apply-these-techniques-in-your-own-research.}}
+
+Please refer to your cheat sheet for descriptions of common commands and
+operators. There is also a wealth of community information online. A
+quick google search can point towards solutions for many problems. Below
+we have provided basic information on key ideas and commands for this
+workshop:
+
+\emph{variable} In R we define data-objects, such as a spreadsheet of
+SVIs, as a variable. Variables allow us to easily reference complex
+data-objects in code functions.
+
+\emph{\textless- (assignment operator)} The \textless- is the assignment
+operator. This can be though of as an `=' (equals). We use the
+assignment operator to define variables.
+
+\emph{\%\textgreater\% (pipe operator)} The \%\textgreater\% is the pipe
+operator. This is a way to chain operations together (i.e.~`pipe'
+information). It takes the output from the left of the pipe and passes
+it to an expression on the right. For example, we can use the pipe to
+take the data-object represented by a variable, and input (`pipe') this
+into a function.
+
+\emph{Data Frame} - Tables of data in R are referred to as `data
+frames'. This is basically a data-object that acts like a spreadsheet,
+in which columns are variables/fields and rows are observations.
+
+Now that you have some background it is time to get started! Feel free
+to follow along with us through this workshop, or skip ahead if you
+dare. If you get stuck at anypoint don't hesistate to let us know, we
+are here to help! Also remeber to refer to the provided pdf to see what
+outputs should look like.
+
+\hypertarget{part-1-read-in-and-format-data}{%
+\paragraph{PART 1: READ IN AND FORMAT
+DATA}\label{part-1-read-in-and-format-data}}
+
+In Part 1, you will import and format data prior to statistical analysis
+(steps 1 - 5)
+
+\#\#\#STEP 1: IMPORT SHAPEFILE Run the below code chunk (green arrow
+below) to import and plot a shapefile of census tracts in Colorado. We
+first read in the shapefile and define it as the variable `dat\_tracts'
+(line XXX). We then plot the shapefile by calling this variable in the
+`plot()' function (lines XXX).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Import shapefile}
+\NormalTok{dat\_tracts }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\AttributeTok{dsn =} \StringTok{"./Tracts/tl\_2010\_08\_tract10.shp"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Reading layer `tl_2010_08_tract10' from data source 
+  `D:\UNM\PEPH\Workshop\MGWR-workshop\Tracts\tl_2010_08_tract10.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 1249 features and 12 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -109.0603 ymin: 36.99242 xmax: -102.0409 ymax: 41.00344
+Geodetic CRS:  NAD83
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot shapefile with base R {-} this is just to check that it renders correctly}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mar=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(dat\_tracts, }\AttributeTok{col=}\StringTok{"\#333333"}\NormalTok{, }\AttributeTok{lwd=}\FloatTok{0.25}\NormalTok{, }\AttributeTok{border=}\DecValTok{0}\NormalTok{, }\AttributeTok{max.plot =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-3-1} \end{center}
+
+\hypertarget{explain-output}{%
+\subsubsection{Explain output}\label{explain-output}}
+
+\hypertarget{step-2-import-potential-exposure-data}{%
+\subsubsection{STEP 2: IMPORT POTENTIAL EXPOSURE
+DATA}\label{step-2-import-potential-exposure-data}}
+
+Run the below code chunk (green arrow below) to import and format data
+table. This data table contains the 10-year (2008 - 2018) average of
+total releases in pounds from TRI facilities by census tract in
+Colorado. We need first ensure that the census tract ID (GEOID) is the
+correct length. Some states have a GEOID that begins with 0, Colorado
+being one of them. The problem is that CSV files created using MS Excel
+(most are) will remove the leading 0 in numbers. We will first make sure
+that every GEOID in the table is 11 characters long by padding them with
+a 0 on the left side.
+
+We first read in the data table and define it as the variable `dat\_tri'
+(line XXX). We then modify the GEOID field, padding it with 0s on the
+left side until each GEOID is 11 characters long (line XXX).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_tri }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}./Exposure/avgReleases\_tract\_CO\_2008{-}2018.csv\textquotesingle{}}\NormalTok{)}
+\CommentTok{\# Pad GEOID to 11 characters}
+\NormalTok{dat\_tri}\SpecialCharTok{$}\NormalTok{GEOID10 }\OtherTok{\textless{}{-}} \FunctionTok{str\_pad}\NormalTok{(dat\_tri}\SpecialCharTok{$}\NormalTok{GEOID10, }\AttributeTok{width =} \DecValTok{11}\NormalTok{, }\AttributeTok{side =} \StringTok{"left"}\NormalTok{, }\AttributeTok{pad =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Copy and paste `unique(nchar(dat\_tri\$GEOID10))' (without the quotes)
+into the console and hit enter. This command returns the number of
+characters in the GEOID field. If it returns 11, you are all set! (if
+not let us know!) All GEOIDs are 11 characters long. \emph{Note: if this
+says something other than 11 make sure the chunk above is running
+correctly.}
+
+\hypertarget{step-3-import-svi-confounders}{%
+\subsubsection{STEP 3: IMPORT SVI
+CONFOUNDERS}\label{step-3-import-svi-confounders}}
+
+Run the below code chunk (green arrow below) to import and format a data
+table. This data table contains national SVI data aggreagted to census
+tracts. We first read in the data table and define it as a variable
+(`svi'), and format to pad GEOIDs (called `FIPS' in the SVI dataset) as
+done in Step 2 (lines XXX). Next, we pipe the svi variable into a
+filtering function `filter()', to filter out data that is located with
+Colorado census tracts, and define this filtered data as a new variable
+(`svi\_sub) (lines XXX). Next, we convert missing values (-999) to NA
+(line XXX); this will make it easier to exclude missing values from
+statistical analysis later on. Lastly, we pipe the svi\_sub variable
+into a selection function ('select()'), to select only fields that we
+want, and overwrite the svi\_sub variable with this selection (lines
+XXX).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{svi }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}./Confounders/SVI\_2018\_US.csv\textquotesingle{}}\NormalTok{) }\CommentTok{\# SVI data for all census tracts in US}
+\NormalTok{svi}\SpecialCharTok{$}\NormalTok{FIPS }\OtherTok{\textless{}{-}} \FunctionTok{str\_pad}\NormalTok{(svi}\SpecialCharTok{$}\NormalTok{FIPS, }\AttributeTok{width =} \DecValTok{11}\NormalTok{, }\AttributeTok{side =} \StringTok{"left"}\NormalTok{, }\AttributeTok{pad =} \DecValTok{0}\NormalTok{) }\CommentTok{\# Pad GEOIDs so that they are all 11 characters long}
+\CommentTok{\# unique(nchar(svi$FIPS))}
+
+\NormalTok{svi\_sub }\OtherTok{\textless{}{-}}\NormalTok{ svi }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(ST\_ABBR }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"CO"}\NormalTok{)) }\CommentTok{\# Subset SVI to only include tracts in Colorado}
+
+\NormalTok{svi\_sub[svi\_sub }\SpecialCharTok{==} \SpecialCharTok{{-}}\DecValTok{999}\NormalTok{] }\OtherTok{\textless{}{-}} \ConstantTok{NA} \CommentTok{\# Missing values are coded as {-}999, here we replace {-}999 with NA}
+
+\CommentTok{\# Keep percentage, percentile, theme ranking, flag variables, and total population}
+\NormalTok{svi\_sub }\OtherTok{\textless{}{-}}\NormalTok{ svi\_sub }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(FIPS, }\FunctionTok{starts\_with}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"E\_TOTPOP"}\NormalTok{, }\StringTok{"EP\_"}\NormalTok{, }\StringTok{"EPL\_"}\NormalTok{, }\StringTok{"SPL\_"}\NormalTok{, }\StringTok{"RPL"}\NormalTok{, }\StringTok{"F\_"}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+Copy and paste `unique(nchar(svi\_sub\$FIPS))' (without the quotes) into
+the console and hit enter. This command returns the number of characters
+in the GEOID field. If it returns 11, you are all set! (if not let us
+know!) All GEOIDs in the SVI dataset are 11 characters long. \emph{Note:
+if this says something other than 11 make sure the chunk above is
+running correctly.}
+
+\hypertarget{step-4-import-low-birthweight-data-health-outcome}{%
+\subsubsection{STEP 4: IMPORT LOW BIRTHWEIGHT DATA (health
+outcome)}\label{step-4-import-low-birthweight-data-health-outcome}}
+
+Run the below code chunk (green arrow below) to import and format a data
+table. This data table contains health outcome data aggregated to census
+tracts. We first read in the data table and define as a variable
+(`outcome') (line XXX). Next, we select the fields we need (low
+birthweight and GEOID) and define this selection as a new variable
+(`lwb') (line XXX). Lastly, we again format to pad the GEOIDs as done in
+steps 2 and 3 (line XXX).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{outcome }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}./Outcome/CDPHE\_Composite\_Selected\_Health\_Outcome\_Dataset\_(Census\_Tract).csv\textquotesingle{}}\NormalTok{)}
+\NormalTok{lwb }\OtherTok{\textless{}{-}}\NormalTok{ outcome[, }\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{26}\SpecialCharTok{:}\DecValTok{32}\NormalTok{)] }\CommentTok{\# Subset to only include low birthweight variables and GEOID}
+
+\NormalTok{lwb}\SpecialCharTok{$}\NormalTok{TRACT\_FIPS }\OtherTok{\textless{}{-}} \FunctionTok{str\_pad}\NormalTok{(lwb}\SpecialCharTok{$}\NormalTok{TRACT\_FIPS, }\AttributeTok{width =} \DecValTok{11}\NormalTok{, }\AttributeTok{side =} \StringTok{"left"}\NormalTok{, }\AttributeTok{pad =} \DecValTok{0}\NormalTok{) }\CommentTok{\# Pad GEOIDs so that they are all 11 characters long}
+\end{Highlighting}
+\end{Shaded}
+
+Copy and paste `unique(nchar(lwb\$TRACT\_FIPS))' (without the quotes)
+into the console and hit enter. This command returns the number of
+characters in the GEOID field. If it returns 11, you are all set! (if
+not let us know!) All GEOIDs in the low birthweight dataset are 11
+characters long. \emph{Note: if this says something other than 11 make
+sure the chunk above is running correctly.}
+
+\hypertarget{step-5-join-data-tables}{%
+\subsubsection{STEP 5: JOIN DATA TABLES}\label{step-5-join-data-tables}}
+
+Run the below code chunk (green arrow below) to join the formatted data
+tables of TVI releases (exposure), SVI confounders, and low birthweight
+(outcome) to our census tract shapefile, creating a combined spatial
+dataset. This combined dataset will then be ready to be fed into our
+statistical models. We first convert the shapefile (`dat\_tracts') into
+a normal dataframe, allowing us to perform join operations. We define
+the converted shapefile as new variable (`dat\_full') (line XXX). Then
+we pipe the census tracts into a series of join functions
+(`right\_join()'), joining our TVI, SVI, and low birtweight data tables
+to create a combined table. We overwrite dat\_full with the new combined
+data table. (lines XXX). Next, we create a subset of the dataset and
+define as a new variable `global\_dat' for use in the global, linear
+regression model (lines XXX). \emph{CHALLENGE: after you finish the
+workshop, come back to this step and follow instructions on line XXX to
+investigate how removing potential outliers effects results}. Next we
+convert dat\_full back into spatial format for use in spatial
+statistical models (line XXX). Lastly, we return a summary of dat\_full
+to make sure data was joined properly (line XXX) (reference the pdf to
+make sure your summary looks correct!).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Combine data tables}
+
+\CommentTok{\# Join data using the dplyr library {-} this doesn\textquotesingle{}t work on SpatialPolygonDataFrame data types, so convert first}
+\NormalTok{dat\_full }\OtherTok{\textless{}{-}} \FunctionTok{st\_as\_sf}\NormalTok{(dat\_tracts)}
+
+\NormalTok{dat\_full }\OtherTok{\textless{}{-}}\NormalTok{ dat\_full }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{right\_join}\NormalTok{(dat\_tri, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"GEOID10"} \OtherTok{=} \StringTok{"GEOID10"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# Exposure}
+  \FunctionTok{right\_join}\NormalTok{(lwb, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"GEOID10"} \OtherTok{=} \StringTok{"TRACT\_FIPS"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# Outcome}
+  \FunctionTok{right\_join}\NormalTok{(svi\_sub, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"GEOID10"} \OtherTok{=} \StringTok{"FIPS"}\NormalTok{)) }\CommentTok{\# Confounders}
+
+\CommentTok{\# Create a subset for global models}
+\NormalTok{global\_dat }\OtherTok{\textless{}{-}}\NormalTok{ dat\_full }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(GEOID10, avgReleasesLb\_10yr, LWB\_ADJRATE, E\_TOTPOP, }\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"EP\_"}\NormalTok{)) }\CommentTok{\# Keep total population estimate (E\_TOTPOT) and land area (ALAND10) for later reference}
+\NormalTok{global\_dat }\OtherTok{\textless{}{-}} 
+  \FunctionTok{data.frame}\NormalTok{(global\_dat[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{]}
+\NormalTok{             ) }
+\CommentTok{\# \%\textgreater{}\% \# To only keep certain observations, uncomment this line and move the pipe (\%\textgreater{}\%) up to the line above}
+\CommentTok{\#   \# Only retain observations we\textquotesingle{}re analyzing}
+\CommentTok{\#   slice(}
+\CommentTok{\#     {-}659}
+\CommentTok{\#   )}
+
+\NormalTok{dat\_full }\OtherTok{\textless{}{-}} \FunctionTok{as}\NormalTok{(}\FunctionTok{na.omit}\NormalTok{(dat\_full), }\StringTok{"Spatial"}\NormalTok{) }\CommentTok{\# Convert dat\_full back to spatial {-} we will use this for the spatial models}
+
+\FunctionTok{summary}\NormalTok{(dat\_full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Object of class SpatialPolygonsDataFrame
+Coordinates:
+         min        max
+x -109.06026 -102.04088
+y   36.99242   41.00344
+Is projected: FALSE 
+proj4string : [+proj=longlat +datum=NAD83 +no_defs]
+Data attributes:
+  STATEFP10          COUNTYFP10         TRACTCE10           GEOID10         
+ Length:1201        Length:1201        Length:1201        Length:1201       
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+    NAME10           NAMELSAD10          MTFCC10           FUNCSTAT10       
+ Length:1201        Length:1201        Length:1201        Length:1201       
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+    ALAND10             AWATER10         INTPTLAT10         INTPTLON10       
+ Min.   :1.556e+05   Min.   :       0   Length:1201        Length:1201       
+ 1st Qu.:1.928e+06   1st Qu.:       0   Class :character   Class :character  
+ Median :3.457e+06   Median :    5394   Mode  :character   Mode  :character  
+ Mean   :1.965e+08   Mean   :  882858                                        
+ 3rd Qu.:2.013e+07   3rd Qu.:  163593                                        
+ Max.   :9.748e+09   Max.   :73093771                                        
+ avgReleasesLb_10yr  LWB_ADJRATE       LWB_L95CI        LWB_U95CI    
+ Min.   :      0    Min.   : 0.000   Min.   : 0.000   Min.   : 0.00  
+ 1st Qu.:      0    1st Qu.: 5.800   1st Qu.: 2.710   1st Qu.: 8.88  
+ Median :      0    Median : 7.180   Median : 3.900   Median :10.73  
+ Mean   :  18872    Mean   : 7.418   Mean   : 4.048   Mean   :11.32  
+ 3rd Qu.:      0    3rd Qu.: 8.840   3rd Qu.: 5.230   3rd Qu.:13.14  
+ Max.   :5014475    Max.   :25.000   Max.   :12.680   Max.   :45.74  
+ LWB_STATEADJRATE   LWB_SL95CI     LWB_SU95CI   LWB_DISPLAY       
+ Min.   :7.43     Min.   :7.34   Min.   :7.52   Length:1201       
+ 1st Qu.:7.43     1st Qu.:7.34   1st Qu.:7.52   Class :character  
+ Median :7.43     Median :7.34   Median :7.52   Mode  :character  
+ Mean   :7.43     Mean   :7.34   Mean   :7.52                     
+ 3rd Qu.:7.43     3rd Qu.:7.34   3rd Qu.:7.52                     
+ Max.   :7.43     Max.   :7.34   Max.   :7.52                     
+    E_TOTPOP         EP_POV         EP_UNEMP         EP_PCI      
+ Min.   :  236   Min.   : 0.00   Min.   : 0.00   Min.   :  4687  
+ 1st Qu.: 3132   1st Qu.: 4.90   1st Qu.: 2.80   1st Qu.: 25975  
+ Median : 4268   Median : 9.40   Median : 4.30   Median : 33984  
+ Mean   : 4533   Mean   :11.49   Mean   : 4.92   Mean   : 36452  
+ 3rd Qu.: 5594   3rd Qu.:15.30   3rd Qu.: 6.20   3rd Qu.: 44000  
+ Max.   :16569   Max.   :80.20   Max.   :33.70   Max.   :137060  
+   EP_NOHSDP         EP_AGE65        EP_AGE17       EP_DISABL   
+ Min.   : 0.000   Min.   : 0.00   Min.   : 0.00   Min.   : 0.4  
+ 1st Qu.: 2.800   1st Qu.: 9.30   1st Qu.:17.90   1st Qu.: 7.4  
+ Median : 5.900   Median :13.30   Median :22.20   Median :10.5  
+ Mean   : 8.915   Mean   :14.29   Mean   :22.04   Mean   :11.2  
+ 3rd Qu.:12.000   3rd Qu.:18.10   3rd Qu.:26.70   3rd Qu.:13.7  
+ Max.   :48.400   Max.   :82.30   Max.   :58.60   Max.   :44.6  
+   EP_SNGPNT        EP_MINRTY       EP_LIMENG         EP_MUNIT    
+ Min.   : 0.000   Min.   : 1.80   Min.   : 0.000   Min.   : 0.00  
+ 1st Qu.: 4.300   1st Qu.:15.90   1st Qu.: 0.400   1st Qu.: 0.70  
+ Median : 7.000   Median :24.70   Median : 1.200   Median : 6.60  
+ Mean   : 7.845   Mean   :31.02   Mean   : 2.911   Mean   :14.48  
+ 3rd Qu.:10.400   3rd Qu.:41.60   3rd Qu.: 3.700   3rd Qu.:21.10  
+ Max.   :44.500   Max.   :92.30   Max.   :37.700   Max.   :98.90  
+   EP_MOBILE         EP_CROWD         EP_NOVEH        EP_GROUPQ     
+ Min.   : 0.000   Min.   : 0.000   Min.   : 0.000   Min.   : 0.000  
+ 1st Qu.: 0.000   1st Qu.: 0.600   1st Qu.: 1.400   1st Qu.: 0.000  
+ Median : 0.300   Median : 1.700   Median : 3.300   Median : 0.000  
+ Mean   : 4.397   Mean   : 2.696   Mean   : 5.096   Mean   : 1.806  
+ 3rd Qu.: 4.500   3rd Qu.: 3.500   3rd Qu.: 6.900   3rd Qu.: 1.100  
+ Max.   :79.100   Max.   :24.800   Max.   :45.800   Max.   :91.400  
+   EP_UNINSUR        EPL_POV         EPL_UNEMP         EPL_PCI      
+ Min.   : 0.000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0014  
+ 1st Qu.: 4.100   1st Qu.:0.1626   1st Qu.:0.1695   1st Qu.:0.1660  
+ Median : 6.900   Median :0.3878   Median :0.3680   Median :0.3391  
+ Mean   : 8.173   Mean   :0.4050   Mean   :0.3941   Mean   :0.3915  
+ 3rd Qu.:10.800   3rd Qu.:0.6130   3rd Qu.:0.5985   3rd Qu.:0.5941  
+ Max.   :34.100   Max.   :0.9990   Max.   :0.9984   Max.   :0.9975  
+   EPL_NOHSDP       EPL_AGE65        EPL_AGE17        EPL_DISABL    
+ Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0012  
+ 1st Qu.:0.0989   1st Qu.:0.1665   1st Qu.:0.2154   1st Qu.:0.1306  
+ Median :0.2765   Median :0.3801   Median :0.4945   Median :0.3449  
+ Mean   :0.3552   Mean   :0.4289   Mean   :0.4971   Mean   :0.3807  
+ 3rd Qu.:0.5792   3rd Qu.:0.6718   3rd Qu.:0.7809   3rd Qu.:0.5770  
+ Max.   :0.9888   Max.   :0.9993   Max.   :0.9998   Max.   :0.9992  
+   EPL_SNGPNT       EPL_MINRTY       EPL_LIMENG       EPL_MUNIT     
+ Min.   :0.0000   Min.   :0.0148   Min.   :0.0000   Min.   :0.0000  
+ 1st Qu.:0.2095   1st Qu.:0.3084   1st Qu.:0.2767   1st Qu.:0.2726  
+ Median :0.4319   Median :0.4388   Median :0.4695   Median :0.5642  
+ Mean   :0.4430   Mean   :0.4652   Mean   :0.4651   Mean   :0.5165  
+ 3rd Qu.:0.6602   3rd Qu.:0.6173   3rd Qu.:0.7029   3rd Qu.:0.8066  
+ Max.   :0.9991   Max.   :0.9237   Max.   :0.9956   Max.   :0.9993  
+   EPL_MOBILE       EPL_CROWD        EPL_NOVEH        EPL_GROUPQ    
+ Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000  
+ 1st Qu.:0.0000   1st Qu.:0.2418   1st Qu.:0.1283   1st Qu.:0.0000  
+ Median :0.4282   Median :0.4656   Median :0.3312   Median :0.0000  
+ Mean   :0.3520   Mean   :0.4451   Mean   :0.3716   Mean   :0.3404  
+ 3rd Qu.:0.6893   3rd Qu.:0.6833   3rd Qu.:0.5955   3rd Qu.:0.6972  
+ Max.   :0.9994   Max.   :0.9889   Max.   :0.9719   Max.   :0.9955  
+   SPL_THEME1       SPL_THEME2       SPL_THEME3       SPL_THEME4   
+ Min.   :0.0775   Min.   :0.0178   Min.   :0.0400   Min.   :0.000  
+ 1st Qu.:0.8266   1st Qu.:1.4039   1st Qu.:0.5798   1st Qu.:1.317  
+ Median :1.3783   Median :1.7538   Median :0.9012   Median :2.061  
+ Mean   :1.5459   Mean   :1.7497   Mean   :0.9303   Mean   :2.026  
+ 3rd Qu.:2.1996   3rd Qu.:2.1428   3rd Qu.:1.2683   3rd Qu.:2.759  
+ Max.   :3.9689   Max.   :3.4910   Max.   :1.8783   Max.   :4.472  
+   SPL_THEMES       RPL_THEME1       RPL_THEME2       RPL_THEME3    
+ Min.   : 1.572   Min.   :0.0004   Min.   :0.0012   Min.   :0.0228  
+ 1st Qu.: 4.523   1st Qu.:0.1411   1st Qu.:0.1478   1st Qu.:0.2734  
+ Median : 5.924   Median :0.3156   Median :0.3251   Median :0.4555  
+ Mean   : 6.251   Mean   :0.3685   Mean   :0.3774   Mean   :0.4737  
+ 3rd Qu.: 7.947   3rd Qu.:0.5766   3rd Qu.:0.5864   3rd Qu.:0.6680  
+ Max.   :12.121   Max.   :0.9998   Max.   :0.9992   Max.   :0.9654  
+   RPL_THEME4       RPL_THEMES         F_POV           F_UNEMP      
+ Min.   :0.0000   Min.   :0.0001   Min.   :0.0000   Min.   :0.0000  
+ 1st Qu.:0.1348   1st Qu.:0.1159   1st Qu.:0.0000   1st Qu.:0.0000  
+ Median :0.3849   Median :0.2995   Median :0.0000   Median :0.0000  
+ Mean   :0.4218   Mean   :0.3716   Mean   :0.0383   Mean   :0.0358  
+ 3rd Qu.:0.6926   3rd Qu.:0.6149   3rd Qu.:0.0000   3rd Qu.:0.0000  
+ Max.   :0.9999   Max.   :0.9967   Max.   :1.0000   Max.   :1.0000  
+     F_PCI            F_NOHSDP          F_THEME1         F_AGE65       
+ Min.   :0.00000   Min.   :0.00000   Min.   :0.0000   Min.   :0.00000  
+ 1st Qu.:0.00000   1st Qu.:0.00000   1st Qu.:0.0000   1st Qu.:0.00000  
+ Median :0.00000   Median :0.00000   Median :0.0000   Median :0.00000  
+ Mean   :0.03664   Mean   :0.05579   Mean   :0.1665   Mean   :0.08243  
+ 3rd Qu.:0.00000   3rd Qu.:0.00000   3rd Qu.:0.0000   3rd Qu.:0.00000  
+ Max.   :1.00000   Max.   :1.00000   Max.   :4.0000   Max.   :1.00000  
+    F_AGE17          F_DISABL          F_SNGPNT          F_THEME2     
+ Min.   :0.0000   Min.   :0.00000   Min.   :0.00000   Min.   :0.0000  
+ 1st Qu.:0.0000   1st Qu.:0.00000   1st Qu.:0.00000   1st Qu.:0.0000  
+ Median :0.0000   Median :0.00000   Median :0.00000   Median :0.0000  
+ Mean   :0.1107   Mean   :0.04913   Mean   :0.04163   Mean   :0.2839  
+ 3rd Qu.:0.0000   3rd Qu.:0.00000   3rd Qu.:0.00000   3rd Qu.:0.0000  
+ Max.   :1.0000   Max.   :1.00000   Max.   :1.00000   Max.   :3.0000  
+    F_MINRTY           F_LIMENG          F_THEME3          F_MUNIT      
+ Min.   :0.000000   Min.   :0.00000   Min.   :0.00000   Min.   :0.0000  
+ 1st Qu.:0.000000   1st Qu.:0.00000   1st Qu.:0.00000   1st Qu.:0.0000  
+ Median :0.000000   Median :0.00000   Median :0.00000   Median :0.0000  
+ Mean   :0.007494   Mean   :0.04829   Mean   :0.05579   Mean   :0.1291  
+ 3rd Qu.:0.000000   3rd Qu.:0.00000   3rd Qu.:0.00000   3rd Qu.:0.0000  
+ Max.   :1.000000   Max.   :1.00000   Max.   :2.00000   Max.   :1.0000  
+    F_MOBILE          F_CROWD           F_NOVEH           F_GROUPQ      
+ Min.   :0.00000   Min.   :0.00000   Min.   :0.00000   Min.   :0.00000  
+ 1st Qu.:0.00000   1st Qu.:0.00000   1st Qu.:0.00000   1st Qu.:0.00000  
+ Median :0.00000   Median :0.00000   Median :0.00000   Median :0.00000  
+ Mean   :0.05579   Mean   :0.05495   Mean   :0.01832   Mean   :0.07077  
+ 3rd Qu.:0.00000   3rd Qu.:0.00000   3rd Qu.:0.00000   3rd Qu.:0.00000  
+ Max.   :1.00000   Max.   :1.00000   Max.   :1.00000   Max.   :1.00000  
+    F_THEME4         F_TOTAL      
+ Min.   :0.0000   Min.   :0.0000  
+ 1st Qu.:0.0000   1st Qu.:0.0000  
+ Median :0.0000   Median :0.0000  
+ Mean   :0.3289   Mean   :0.8351  
+ 3rd Qu.:1.0000   3rd Qu.:1.0000  
+ Max.   :4.0000   Max.   :9.0000  
+\end{verbatim}
+
+\hypertarget{part-2-global-linear-model}{%
+\subsubsection{PART 2: GLOBAL LINEAR
+MODEL}\label{part-2-global-linear-model}}
+
+In Part 2 you will run global linear regressions and analyze model
+outputs (steps 6 - 10)
+
+\hypertarget{step-6-global-model---linear-regression}{%
+\subsubsection{STEP 6: GLOBAL MODEL - LINEAR
+REGRESSION}\label{step-6-global-model---linear-regression}}
+
+Run the below code chunk (green arrow below) to perform a standard
+linear regression, in which low birthweight is our dependent variable
+(health outcome), TVI releases is our independent (potential exposure),
+and SVI variables are confounders/co-variates. We first pass our data
+(for the linear regression, the non-spatial `global\_dat') to a linear
+model function (`lm()') and define the output of the model as the
+variable `lm\_full' (lines XXX). Then we return the results summary of
+the linear model (line XXX). (reference the pdf to make sure your
+summary looks correct!).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# fit full model}
+\NormalTok{lm\_full }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(LWB\_ADJRATE }\SpecialCharTok{\textasciitilde{}}\NormalTok{ avgReleasesLb\_10yr }\SpecialCharTok{+}\NormalTok{ EP\_POV }\SpecialCharTok{+}\NormalTok{ EP\_UNEMP }\SpecialCharTok{+}\NormalTok{ EP\_PCI }\SpecialCharTok{+}\NormalTok{ EP\_NOHSDP }\SpecialCharTok{+}\NormalTok{ EP\_AGE65 }\SpecialCharTok{+}\NormalTok{ EP\_AGE17 }\SpecialCharTok{+}\NormalTok{ EP\_DISABL}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_SNGPNT }\SpecialCharTok{+}\NormalTok{ EP\_MINRTY }\SpecialCharTok{+}\NormalTok{ EP\_LIMENG }\SpecialCharTok{+}\NormalTok{ EP\_MUNIT }\SpecialCharTok{+}\NormalTok{ EP\_MOBILE }\SpecialCharTok{+}\NormalTok{ EP\_CROWD}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_NOVEH }\SpecialCharTok{+}\NormalTok{ EP\_GROUPQ }\SpecialCharTok{+}\NormalTok{ EP\_UNINSUR}
+\NormalTok{              , }\AttributeTok{data =}\NormalTok{ global\_dat)}
+
+\FunctionTok{summary}\NormalTok{(lm\_full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+Call:
+lm(formula = LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + 
+    EP_PCI + EP_NOHSDP + EP_AGE65 + EP_AGE17 + EP_DISABL + EP_SNGPNT + 
+    EP_MINRTY + EP_LIMENG + EP_MUNIT + EP_MOBILE + EP_CROWD + 
+    EP_NOVEH + EP_GROUPQ + EP_UNINSUR, data = global_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.2623 -1.5013 -0.1556  1.1861 17.5503 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(>|t|)    
+(Intercept)         5.519e+00  6.922e-01   7.973 3.62e-15 ***
+avgReleasesLb_10yr -6.118e-07  3.470e-07  -1.763  0.07812 .  
+EP_POV              3.361e-02  1.361e-02   2.470  0.01365 *  
+EP_UNEMP            1.152e-01  2.659e-02   4.333 1.59e-05 ***
+EP_PCI              1.076e-05  7.372e-06   1.460  0.14469    
+EP_NOHSDP          -5.857e-02  2.026e-02  -2.891  0.00391 ** 
+EP_AGE65            3.492e-04  1.538e-02   0.023  0.98188    
+EP_AGE17           -4.699e-02  1.784e-02  -2.635  0.00853 ** 
+EP_DISABL           3.754e-02  2.337e-02   1.606  0.10850    
+EP_SNGPNT          -1.167e-02  2.133e-02  -0.547  0.58454    
+EP_MINRTY           4.512e-02  7.828e-03   5.763 1.05e-08 ***
+EP_LIMENG          -4.859e-02  3.786e-02  -1.284  0.19955    
+EP_MUNIT           -2.653e-03  5.633e-03  -0.471  0.63779    
+EP_MOBILE           8.871e-03  9.322e-03   0.952  0.34150    
+EP_CROWD            4.057e-02  3.596e-02   1.128  0.25953    
+EP_NOVEH            1.222e-02  1.985e-02   0.616  0.53809    
+EP_GROUPQ          -2.396e-02  1.213e-02  -1.975  0.04851 *  
+EP_UNINSUR          4.932e-02  2.073e-02   2.379  0.01752 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.428 on 1183 degrees of freedom
+  (48 observations deleted due to missingness)
+Multiple R-squared:  0.1602,    Adjusted R-squared:  0.1481 
+F-statistic: 13.27 on 17 and 1183 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\hypertarget{step-7-stepwise-backward-selection-linear-regression}{%
+\subsubsection{STEP 7: STEPWISE-BACKWARD SELECTION LINEAR
+REGRESSION}\label{step-7-stepwise-backward-selection-linear-regression}}
+
+Run the code chunk below to perform a step-wise backward linear
+regression, in which variables are removed until an optimized, reduced
+model is discovered based on lowest AIC. We do this by passing our
+linear model into a step function (`step()') and defining the output
+(our optimized model) as a new variable (`lm\_final') (lines XXX). As
+before, we return a results summary (line XXX).(reference the pdf to
+make sure your summary looks correct!).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Backward selection using model AIC}
+\NormalTok{lm\_red\_AIC }\OtherTok{\textless{}{-}} \FunctionTok{step}\NormalTok{(lm\_full, }\AttributeTok{direction=}\StringTok{"backward"}\NormalTok{, }\AttributeTok{test=}\StringTok{"F"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Start:  AIC=2148.61
+LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + 
+    EP_NOHSDP + EP_AGE65 + EP_AGE17 + EP_DISABL + EP_SNGPNT + 
+    EP_MINRTY + EP_LIMENG + EP_MUNIT + EP_MOBILE + EP_CROWD + 
+    EP_NOVEH + EP_GROUPQ + EP_UNINSUR
+
+                     Df Sum of Sq    RSS    AIC F value    Pr(>F)    
+- EP_AGE65            1     0.003 6974.1 2146.6  0.0005  0.981882    
+- EP_MUNIT            1     1.307 6975.4 2146.8  0.2218  0.637788    
+- EP_SNGPNT           1     1.763 6975.8 2146.9  0.2991  0.584540    
+- EP_NOVEH            1     2.236 6976.3 2147.0  0.3793  0.538086    
+- EP_MOBILE           1     5.338 6979.4 2147.5  0.9055  0.341498    
+- EP_CROWD            1     7.502 6981.6 2147.9  1.2725  0.259527    
+- EP_LIMENG           1     9.712 6983.8 2148.3  1.6475  0.199550    
+<none>                            6974.1 2148.6                      
+- EP_PCI              1    12.558 6986.6 2148.8  2.1302  0.144685    
+- EP_DISABL           1    15.209 6989.3 2149.2  2.5799  0.108499    
+- avgReleasesLb_10yr  1    18.328 6992.4 2149.8  3.1090  0.078120 .  
+- EP_GROUPQ           1    22.993 6997.0 2150.6  3.9003  0.048511 *  
+- EP_UNINSUR          1    33.365 7007.4 2152.3  5.6597  0.017517 *  
+- EP_POV              1    35.967 7010.0 2152.8  6.1010  0.013651 *  
+- EP_AGE17            1    40.921 7015.0 2153.6  6.9414  0.008532 ** 
+- EP_NOHSDP           1    49.273 7023.3 2155.1  8.3581  0.003910 ** 
+- EP_UNEMP            1   110.690 7084.7 2165.5 18.7763 1.595e-05 ***
+- EP_MINRTY           1   195.811 7169.9 2179.9 33.2152 1.052e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Step:  AIC=2146.61
+LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + 
+    EP_NOHSDP + EP_AGE17 + EP_DISABL + EP_SNGPNT + EP_MINRTY + 
+    EP_LIMENG + EP_MUNIT + EP_MOBILE + EP_CROWD + EP_NOVEH + 
+    EP_GROUPQ + EP_UNINSUR
+
+                     Df Sum of Sq    RSS    AIC F value    Pr(>F)    
+- EP_MUNIT            1     1.355 6975.4 2144.8  0.2301  0.631559    
+- EP_SNGPNT           1     1.765 6975.8 2144.9  0.2997  0.584200    
+- EP_NOVEH            1     2.233 6976.3 2145.0  0.3792  0.538171    
+- EP_MOBILE           1     5.341 6979.4 2145.5  0.9068  0.341167    
+- EP_CROWD            1     7.509 6981.6 2145.9  1.2748  0.259104    
+- EP_LIMENG           1     9.839 6983.9 2146.3  1.6703  0.196467    
+<none>                            6974.1 2146.6                      
+- EP_PCI              1    13.033 6987.1 2146.8  2.2126  0.137154    
+- avgReleasesLb_10yr  1    18.331 6992.4 2147.8  3.1120  0.077974 .  
+- EP_DISABL           1    22.611 6996.7 2148.5  3.8387  0.050316 .  
+- EP_GROUPQ           1    23.401 6997.5 2148.6  3.9729  0.046468 *  
+- EP_UNINSUR          1    33.568 7007.6 2150.4  5.6989  0.017132 *  
+- EP_POV              1    36.351 7010.4 2150.8  6.1715  0.013120 *  
+- EP_AGE17            1    43.563 7017.6 2152.1  7.3958  0.006633 ** 
+- EP_NOHSDP           1    49.466 7023.5 2153.1  8.3980  0.003826 ** 
+- EP_UNEMP            1   110.715 7084.8 2163.5 18.7963 1.578e-05 ***
+- EP_MINRTY           1   211.012 7185.1 2180.4 35.8240 2.859e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Step:  AIC=2144.84
+LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + 
+    EP_NOHSDP + EP_AGE17 + EP_DISABL + EP_SNGPNT + EP_MINRTY + 
+    EP_LIMENG + EP_MOBILE + EP_CROWD + EP_NOVEH + EP_GROUPQ + 
+    EP_UNINSUR
+
+                     Df Sum of Sq    RSS    AIC F value    Pr(>F)    
+- EP_NOVEH            1     1.216 6976.6 2143.1  0.2066  0.649504    
+- EP_SNGPNT           1     2.220 6977.6 2143.2  0.3771  0.539292    
+- EP_MOBILE           1     6.100 6981.5 2143.9  1.0363  0.308885    
+- EP_CROWD            1     6.333 6981.7 2143.9  1.0758  0.299841    
+- EP_LIMENG           1     9.748 6985.2 2144.5  1.6560  0.198394    
+<none>                            6975.4 2144.8                      
+- EP_PCI              1    12.657 6988.1 2145.0  2.1501  0.142822    
+- avgReleasesLb_10yr  1    17.843 6993.3 2145.9  3.0312  0.081936 .  
+- EP_GROUPQ           1    23.067 6998.5 2146.8  3.9186  0.047986 *  
+- EP_DISABL           1    26.155 7001.6 2147.3  4.4432  0.035250 *  
+- EP_UNINSUR          1    32.910 7008.3 2148.5  5.5909  0.018214 *  
+- EP_POV              1    36.039 7011.5 2149.0  6.1224  0.013487 *  
+- EP_AGE17            1    45.368 7020.8 2150.6  7.7072  0.005587 ** 
+- EP_NOHSDP           1    48.553 7024.0 2151.2  8.2483  0.004152 ** 
+- EP_UNEMP            1   114.881 7090.3 2162.5 19.5162 1.089e-05 ***
+- EP_MINRTY           1   214.304 7189.7 2179.2 36.4065 2.138e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Step:  AIC=2143.05
+LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + 
+    EP_NOHSDP + EP_AGE17 + EP_DISABL + EP_SNGPNT + EP_MINRTY + 
+    EP_LIMENG + EP_MOBILE + EP_CROWD + EP_GROUPQ + EP_UNINSUR
+
+                     Df Sum of Sq    RSS    AIC F value    Pr(>F)    
+- EP_SNGPNT           1     2.283 6978.9 2141.4  0.3881  0.533417    
+- EP_MOBILE           1     5.234 6981.9 2141.9  0.8898  0.345737    
+- EP_CROWD            1     6.549 6983.2 2142.2  1.1133  0.291591    
+- EP_LIMENG           1     9.318 6985.9 2142.7  1.5840  0.208440    
+<none>                            6976.6 2143.1                      
+- EP_PCI              1    14.295 6990.9 2143.5  2.4300  0.119298    
+- avgReleasesLb_10yr  1    17.989 6994.6 2144.2  3.0580  0.080598 .  
+- EP_GROUPQ           1    22.596 6999.2 2144.9  3.8412  0.050240 .  
+- EP_DISABL           1    29.890 7006.5 2146.2  5.0812  0.024369 *  
+- EP_UNINSUR          1    32.307 7008.9 2146.6  5.4920  0.019268 *  
+- EP_POV              1    46.683 7023.3 2149.1  7.9360  0.004927 ** 
+- EP_NOHSDP           1    47.722 7024.3 2149.2  8.1125  0.004472 ** 
+- EP_AGE17            1    50.925 7027.6 2149.8  8.6570  0.003321 ** 
+- EP_UNEMP            1   117.436 7094.1 2161.1 19.9637 8.647e-06 ***
+- EP_MINRTY           1   219.758 7196.4 2178.3 37.3581 1.332e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Step:  AIC=2141.45
+LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + 
+    EP_NOHSDP + EP_AGE17 + EP_DISABL + EP_MINRTY + EP_LIMENG + 
+    EP_MOBILE + EP_CROWD + EP_GROUPQ + EP_UNINSUR
+
+                     Df Sum of Sq    RSS    AIC F value    Pr(>F)    
+- EP_MOBILE           1     5.865 6984.8 2140.4  0.9976 0.3180955    
+- EP_CROWD            1     6.188 6985.1 2140.5  1.0525 0.3051485    
+- EP_LIMENG           1     8.743 6987.7 2140.9  1.4870 0.2229290    
+<none>                            6978.9 2141.4                      
+- EP_PCI              1    15.280 6994.2 2142.1  2.5990 0.1072002    
+- avgReleasesLb_10yr  1    18.121 6997.0 2142.6  3.0821 0.0794181 .  
+- EP_GROUPQ           1    22.163 7001.1 2143.2  3.7696 0.0524273 .  
+- EP_DISABL           1    30.060 7009.0 2144.6  5.1127 0.0239312 *  
+- EP_UNINSUR          1    31.358 7010.3 2144.8  5.3335 0.0210903 *  
+- EP_POV              1    44.662 7023.6 2147.1  7.5964 0.0059382 ** 
+- EP_NOHSDP           1    46.709 7025.6 2147.5  7.9445 0.0049034 ** 
+- EP_AGE17            1    72.934 7051.8 2151.9 12.4050 0.0004445 ***
+- EP_UNEMP            1   118.969 7097.9 2159.8 20.2346 7.522e-06 ***
+- EP_MINRTY           1   221.991 7200.9 2177.1 37.7570 1.092e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Step:  AIC=2140.45
+LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + 
+    EP_NOHSDP + EP_AGE17 + EP_DISABL + EP_MINRTY + EP_LIMENG + 
+    EP_CROWD + EP_GROUPQ + EP_UNINSUR
+
+                     Df Sum of Sq    RSS    AIC F value    Pr(>F)    
+- EP_CROWD            1     7.860 6992.6 2139.8  1.3369 0.2478143    
+- EP_LIMENG           1     9.284 6994.1 2140.1  1.5791 0.2091340    
+<none>                            6984.8 2140.4                      
+- EP_PCI              1    14.125 6998.9 2140.9  2.4024 0.1214125    
+- avgReleasesLb_10yr  1    16.846 7001.6 2141.3  2.8652 0.0907767 .  
+- EP_GROUPQ           1    20.860 7005.6 2142.0  3.5480 0.0598606 .  
+- EP_DISABL           1    35.898 7020.7 2144.6  6.1057 0.0136142 *  
+- EP_UNINSUR          1    37.077 7021.9 2144.8  6.3062 0.0121636 *  
+- EP_NOHSDP           1    43.173 7027.9 2145.9  7.3431 0.0068288 ** 
+- EP_POV              1    44.180 7029.0 2146.0  7.5144 0.0062127 ** 
+- EP_AGE17            1    67.978 7052.8 2150.1 11.5620 0.0006955 ***
+- EP_UNEMP            1   118.779 7103.6 2158.7 20.2025 7.647e-06 ***
+- EP_MINRTY           1   218.236 7203.0 2175.4 37.1185 1.499e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Step:  AIC=2139.81
+LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + 
+    EP_NOHSDP + EP_AGE17 + EP_DISABL + EP_MINRTY + EP_LIMENG + 
+    EP_GROUPQ + EP_UNINSUR
+
+                     Df Sum of Sq    RSS    AIC F value    Pr(>F)    
+- EP_LIMENG           1     5.296 6997.9 2138.7  0.9006  0.342815    
+<none>                            6992.6 2139.8                      
+- EP_PCI              1    13.602 7006.2 2140.1  2.3128  0.128576    
+- avgReleasesLb_10yr  1    16.370 7009.0 2140.6  2.7835  0.095506 .  
+- EP_GROUPQ           1    19.116 7011.8 2141.1  3.2504  0.071660 .  
+- EP_DISABL           1    34.793 7027.4 2143.8  5.9160  0.015151 *  
+- EP_NOHSDP           1    42.483 7035.1 2145.1  7.2237  0.007295 ** 
+- EP_UNINSUR          1    46.380 7039.0 2145.7  7.8863  0.005063 ** 
+- EP_POV              1    48.708 7041.3 2146.1  8.2820  0.004076 ** 
+- EP_AGE17            1    62.877 7055.5 2148.6 10.6914  0.001107 ** 
+- EP_UNEMP            1   119.635 7112.3 2158.2 20.3423 7.116e-06 ***
+- EP_MINRTY           1   225.352 7218.0 2175.9 38.3179 8.260e-10 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Step:  AIC=2138.71
+LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + 
+    EP_NOHSDP + EP_AGE17 + EP_DISABL + EP_MINRTY + EP_GROUPQ + 
+    EP_UNINSUR
+
+                     Df Sum of Sq    RSS    AIC F value    Pr(>F)    
+<none>                            6997.9 2138.7                      
+- EP_PCI              1    11.774 7009.7 2138.7  2.0022 0.1573282    
+- avgReleasesLb_10yr  1    16.860 7014.8 2139.6  2.8670 0.0906767 .  
+- EP_GROUPQ           1    19.272 7017.2 2140.0  3.2772 0.0704993 .  
+- EP_UNINSUR          1    41.158 7039.1 2143.8  6.9989 0.0082633 ** 
+- EP_DISABL           1    47.719 7045.7 2144.9  8.1146 0.0044666 ** 
+- EP_POV              1    50.671 7048.6 2145.4  8.6166 0.0033951 ** 
+- EP_AGE17            1    62.911 7060.8 2147.5 10.6980 0.0011032 ** 
+- EP_NOHSDP           1    79.275 7077.2 2150.2 13.4808 0.0002517 ***
+- EP_UNEMP            1   122.599 7120.5 2157.6 20.8481 5.488e-06 ***
+- EP_MINRTY           1   226.502 7224.4 2175.0 38.5167 7.482e-10 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lm\_final }\OtherTok{\textless{}{-}}\NormalTok{ lm\_red\_AIC}
+\FunctionTok{summary}\NormalTok{(lm\_final)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+Call:
+lm(formula = LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + 
+    EP_PCI + EP_NOHSDP + EP_AGE17 + EP_DISABL + EP_MINRTY + EP_GROUPQ + 
+    EP_UNINSUR, data = global_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.2037 -1.5149 -0.1622  1.1832 17.6806 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(>|t|)    
+(Intercept)         5.426e+00  6.264e-01   8.662  < 2e-16 ***
+avgReleasesLb_10yr -5.841e-07  3.450e-07  -1.693 0.090677 .  
+EP_POV              3.519e-02  1.199e-02   2.935 0.003395 ** 
+EP_UNEMP            1.198e-01  2.625e-02   4.566 5.49e-06 ***
+EP_PCI              9.981e-06  7.054e-06   1.415 0.157328    
+EP_NOHSDP          -6.099e-02  1.661e-02  -3.672 0.000252 ***
+EP_AGE17           -4.446e-02  1.359e-02  -3.271 0.001103 ** 
+EP_DISABL           4.934e-02  1.732e-02   2.849 0.004467 ** 
+EP_MINRTY           4.021e-02  6.479e-03   6.206 7.48e-10 ***
+EP_GROUPQ          -2.163e-02  1.195e-02  -1.810 0.070499 .  
+EP_UNINSUR          4.997e-02  1.889e-02   2.646 0.008263 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.425 on 1190 degrees of freedom
+  (48 observations deleted due to missingness)
+Multiple R-squared:  0.1573,    Adjusted R-squared:  0.1502 
+F-statistic: 22.21 on 10 and 1190 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\hypertarget{step-8-plot-correlation-matrix}{%
+\subsubsection{STEP 8: PLOT CORRELATION
+MATRIX}\label{step-8-plot-correlation-matrix}}
+
+Run the below code chunk to create a correlation-matrix plot of the
+variables from our reduced linear model. We first define a new variable
+`vars' as a list of the model variable names (lines XXX). Next, we
+create a subset data table by selecting from `global\_dat' the list of
+variables contained in `vars' (line XXX). Lastly, we pass this data to a
+plotting function `ggpairs()' and define the output plot as variable
+`p', and print `p' to display it (lines XXX).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot correlation matrix of variables from the reduced model}
+\NormalTok{vars }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"avgReleasesLb\_10yr"}\NormalTok{, }\StringTok{"EP\_POV"}\NormalTok{, }\StringTok{"EP\_UNEMP"}\NormalTok{, }\StringTok{"EP\_PCI"}\NormalTok{, }
+  \StringTok{"EP\_NOHSDP"}\NormalTok{, }\StringTok{"EP\_AGE17"}\NormalTok{, }\StringTok{"EP\_DISABL"}\NormalTok{, }\StringTok{"EP\_MINRTY"}\NormalTok{, }
+  \StringTok{"EP\_GROUPQ"}\NormalTok{, }\StringTok{"EP\_UNINSUR"}
+\NormalTok{)}
+
+\CommentTok{\# Create a subset of \textquotesingle{}global\_dat\textquotesingle{} with selected variables}
+\NormalTok{global\_dat\_sub }\OtherTok{\textless{}{-}}\NormalTok{ global\_dat[, }\FunctionTok{c}\NormalTok{(}\StringTok{"LWB\_ADJRATE"}\NormalTok{, vars)]}
+
+\CommentTok{\# Plot the correlation matrix using ggpairs}
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{ggpairs}\NormalTok{(}
+\NormalTok{  global\_dat\_sub,}
+  \AttributeTok{upper =} \FunctionTok{list}\NormalTok{(}\AttributeTok{continuous =} \FunctionTok{wrap}\NormalTok{(}\StringTok{"points"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.5}\NormalTok{)),}
+  \AttributeTok{lower =} \FunctionTok{list}\NormalTok{(}\AttributeTok{continuous =} \StringTok{"cor"}\NormalTok{)}
+\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(p)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-10-1} \end{center}
+
+\hypertarget{step-9-model-diagnostics}{%
+\subsubsection{STEP 9: MODEL
+DIAGNOSTICS}\label{step-9-model-diagnostics}}
+
+Run the code chunk below to plot model diagnostics. We do this by
+passing our model output into a linear model diagnostic plotting
+function `lm\_diag\_plots' (line XXX).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# plot diagnostics}
+\FunctionTok{lm\_diag\_plots}\NormalTok{(lm\_red\_AIC, }\AttributeTok{sw\_plot\_set =} \StringTok{"simpleAV"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-11-1} \end{center}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-11-2} \end{center}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-11-3} \end{center}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-11-4} \end{center}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-11-5} \end{center}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-11-6} \end{center}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-11-7} \end{center}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-11-8} \end{center}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-11-9} \end{center}
+
+\begin{itemize}
+\tightlist
+\item
+  Full model diagnostics identify point 659 as being influential, and
+  the Cook's distance vs.~leverage plot suggests that it exerts some
+  noteworthy leverage on the overall model. However, the AV plots don't
+  corroborate this conclusion, showing that point 659 doesn't appear to
+  pull the line of best fit significantly in its direction.
+\end{itemize}
+
+\hypertarget{step-10-spatial-autocorrelation}{%
+\subsubsection{STEP 10: SPATIAL
+AUTOCORRELATION}\label{step-10-spatial-autocorrelation}}
+
+Run the code chunk below to test for spatial autocorrelation in the
+residuals of our linear model. We do this by first selecting the
+residuals from the model output and defining the residuals as new
+variable `lm\_resid\_col'. Next, we append this residual-variable to our
+spatial data table (line XXX). Now we are ready to test for spatial
+autocorrelation. First we define the neighborhood kernel function and
+weighting scheme (lines XXX). Then we pass these parameters, along with
+our spatial data table, to a function that tests for spatial
+autocorrelation `moran.mc'. (lines XXX) This function performs a Moran's
+I, which is a standard test for spatial autocorrealtion. The function
+will return statistics that allow us to infer how spatially
+autocorrelated the residuals are, and thus how well calibrated and
+specified our linear model is.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Spatial autocorrelation of global linear model residuals}
+\NormalTok{lm\_resid\_col }\OtherTok{\textless{}{-}}\NormalTok{ lm\_red\_AIC}\SpecialCharTok{$}\NormalTok{residuals }\CommentTok{\# Make data table of residuals from lm\_red\_AIC}
+\NormalTok{dat\_full}\SpecialCharTok{$}\NormalTok{residuals }\OtherTok{\textless{}{-}}\NormalTok{ lm\_resid\_col[}\FunctionTok{as.character}\NormalTok{(}\FunctionTok{rownames}\NormalTok{(dat\_full}\SpecialCharTok{@}\NormalTok{data))] }\CommentTok{\# Append residuals to dat\_full by row name}
+
+\NormalTok{nb }\OtherTok{\textless{}{-}} \FunctionTok{poly2nb}\NormalTok{(dat\_full, }\AttributeTok{queen =} \ConstantTok{TRUE}\NormalTok{) }\CommentTok{\# Define neighbors for each polygon}
+\NormalTok{lw }\OtherTok{\textless{}{-}} \FunctionTok{nb2listw}\NormalTok{(nb, }\AttributeTok{style =} \StringTok{"U"}\NormalTok{, }\AttributeTok{zero.policy =} \ConstantTok{TRUE}\NormalTok{) }\CommentTok{\# Assign weights to neighbors}
+\NormalTok{moran\_lm }\OtherTok{\textless{}{-}} \FunctionTok{moran.mc}\NormalTok{(dat\_full}\SpecialCharTok{$}\NormalTok{residuals}
+\NormalTok{                    , lw}
+\NormalTok{                    , }\AttributeTok{nsim =} \DecValTok{999}
+\NormalTok{                    , }\AttributeTok{alternative =} \StringTok{"two.sided"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}\StringTok{"Moran\textquotesingle{}s I statistic: "}\NormalTok{ ,moran\_lm}\SpecialCharTok{$}\NormalTok{statistic))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+     statistic              
+[1,] "Moran's I statistic: "
+[2,] "0.0734042528356365"   
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}\StringTok{"P{-}value of Moran\textquotesingle{}s I statistic: "}\NormalTok{, moran\_lm}\SpecialCharTok{$}\NormalTok{p.value)) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+     [,1]                              
+[1,] "P-value of Moran's I statistic: "
+[2,] "0"                               
+\end{verbatim}
+
+The Moran's \(I\) statistic of the linear model is 0.0734043 and the
+p-value is 0. Because the \(p-value\) is \(<0.05\), we conclude that the
+residuals are significantly spatially autocorrelated, meaning that there
+are significant spatial relationships in the data that are not
+reconciled by the current linear model.
+
+\hypertarget{part-3-local-spatial-model}{%
+\paragraph{PART 3: LOCAL SPATIAL
+MODEL}\label{part-3-local-spatial-model}}
+
+In Part 3 you will run local geographically weighted regressions and
+analyze model outputs (steps XX)
+
+\hypertarget{step-11-calculate-distance-matrix}{%
+\subsubsection{STEP 11: CALCULATE DISTANCE
+MATRIX}\label{step-11-calculate-distance-matrix}}
+
+Run the below code chunk to calculate a distance matrix. A distance
+matrix is a matrix in which elements correspond to estimates of a
+pairwise distance between the sequences in a set. This can be simply
+though of as a measure of the distances between the locations of all of
+our observations in our data table.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate distance matrix}
+\NormalTok{DM }\OtherTok{\textless{}{-}} \FunctionTok{gw.dist}\NormalTok{(}\AttributeTok{dp.locat =} \FunctionTok{coordinates}\NormalTok{(dat\_full))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step-12-calculate-bandwidths}{%
+\subsubsection{STEP 12: CALCULATE
+BANDWIDTHS}\label{step-12-calculate-bandwidths}}
+
+Run the below code chunk to define the optimal bandwidths for the GWR
+model. In the case of GWR, the bandwidth refers to as the number of
+neighborhoods that will be used for each local regression equation. This
+can be simply thought of as the size, or area, of each local area that
+will be modeled per each dependent-independent/confounder relationship.
+
+\begin{verbatim}
+Adaptive bandwidth: 749 CV score: 7179.163 
+Adaptive bandwidth: 471 CV score: 7141.222 
+Adaptive bandwidth: 297 CV score: 7130.763 
+Adaptive bandwidth: 192 CV score: 7138.79 
+Adaptive bandwidth: 364 CV score: 7135.105 
+Adaptive bandwidth: 257 CV score: 7127.056 
+Adaptive bandwidth: 231 CV score: 7124.768 
+Adaptive bandwidth: 216 CV score: 7125.155 
+Adaptive bandwidth: 241 CV score: 7125.606 
+Adaptive bandwidth: 225 CV score: 7124.274 
+Adaptive bandwidth: 221 CV score: 7124.721 
+Adaptive bandwidth: 227 CV score: 7124.495 
+Adaptive bandwidth: 223 CV score: 7124.299 
+Adaptive bandwidth: 225 CV score: 7124.274 
+\end{verbatim}
+
+\hypertarget{step-13-run-gwr}{%
+\subsubsection{STEP 13: RUN GWR}\label{step-13-run-gwr}}
+
+Run to code chunk below to perform a normal geographically weighted
+regression. We do this by passing our distance matrix (`DM') and
+bandwidth (`bw') variables, along with our spatial data table, to a GWR
+function (`gwr.basic()') and defining its output as a new variable
+`gwr\_results\_dat' (lines XXX). We then return the model diagnositcs to
+see results (line XXX).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Basic GWR}
+\NormalTok{gwr\_results\_dat }\OtherTok{\textless{}{-}} \FunctionTok{gwr.basic}\NormalTok{(LWB\_ADJRATE }\SpecialCharTok{\textasciitilde{}}\NormalTok{ avgReleasesLb\_10yr }
+                                         \SpecialCharTok{+}\NormalTok{ EP\_POV}
+                                         \SpecialCharTok{+}\NormalTok{ EP\_UNEMP}
+                                         \SpecialCharTok{+}\NormalTok{ EP\_PCI}
+                                         \SpecialCharTok{+}\NormalTok{ EP\_NOHSDP}
+                                         \SpecialCharTok{+}\NormalTok{ EP\_AGE17}
+                                         \SpecialCharTok{+}\NormalTok{ EP\_DISABL}
+                                         \SpecialCharTok{+}\NormalTok{ EP\_MINRTY}
+                                         \SpecialCharTok{+}\NormalTok{ EP\_GROUPQ}
+                                         \SpecialCharTok{+}\NormalTok{ EP\_UNINSUR}
+                                         \SpecialCharTok{+}\NormalTok{ ALAND10}
+\NormalTok{                           , }\AttributeTok{data =}\NormalTok{ dat\_full}
+\NormalTok{                           , }\AttributeTok{bw =}\NormalTok{ bw}
+\NormalTok{                           , }\AttributeTok{dMat =}\NormalTok{ DM}
+\NormalTok{                           , }\AttributeTok{kernel =} \StringTok{"gaussian"}
+\NormalTok{                           , }\AttributeTok{adaptive =} \ConstantTok{TRUE}
+\NormalTok{                           , }\AttributeTok{longlat =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Model diagnostics}
+\NormalTok{gwr\_results\_dat}\SpecialCharTok{$}\NormalTok{GW.diagnostic}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+$RSS.gw
+[1] 6505.881
+
+$AIC
+[1] 5472.42
+
+$AICc
+[1] 5511.684
+
+$enp
+[1] 46.44701
+
+$edf
+[1] 1154.553
+
+$gw.R2
+[1] 0.2165526
+
+$gwR2.adj
+[1] 0.1850076
+
+$BIC
+[1] 4484.467
+\end{verbatim}
+
+\hypertarget{step-14-test-for-spatial-autocorrelation}{%
+\subsubsection{STEP 14: TEST FOR SPATIAL
+AUTOCORRELATION}\label{step-14-test-for-spatial-autocorrelation}}
+
+Run the code chunk below to test for spatial autocorrelation in model
+residuals. We do this the same way as with the linear regression model
+(see step 10).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Spatial autocorrelation of basic GWR residuals}
+\NormalTok{nb }\OtherTok{\textless{}{-}} \FunctionTok{poly2nb}\NormalTok{(gwr\_results\_dat}\SpecialCharTok{$}\NormalTok{SDF, }\AttributeTok{queen =} \ConstantTok{TRUE}\NormalTok{) }\CommentTok{\# Define neighbors for each polygon}
+\NormalTok{lw }\OtherTok{\textless{}{-}} \FunctionTok{nb2listw}\NormalTok{(nb, }\AttributeTok{style =} \StringTok{"U"}\NormalTok{, }\AttributeTok{zero.policy =} \ConstantTok{TRUE}\NormalTok{) }\CommentTok{\# Assign weights to neighbors}
+\NormalTok{moran\_gwr }\OtherTok{\textless{}{-}} \FunctionTok{moran.mc}\NormalTok{(gwr\_results\_dat}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{residual}
+\NormalTok{                    , lw}
+\NormalTok{                    , }\AttributeTok{nsim =} \DecValTok{999}
+\NormalTok{                    , }\AttributeTok{alternative =} \StringTok{"two.sided"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}\StringTok{"Moran\textquotesingle{}s I statistic: "}\NormalTok{ ,moran\_gwr}\SpecialCharTok{$}\NormalTok{statistic))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+     statistic              
+[1,] "Moran's I statistic: "
+[2,] "0.0390934212005885"   
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}\StringTok{"P{-}value of Moran\textquotesingle{}s I statistic: "}\NormalTok{, moran\_gwr}\SpecialCharTok{$}\NormalTok{p.value)) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+     [,1]                              
+[1,] "P-value of Moran's I statistic: "
+[2,] "0.016"                           
+\end{verbatim}
+
+The Moran's \(I\) statistic of the GWR model is 0.0390934 and the
+p-value is 0.016. Because the \(p-value\) is \(<0.05\), we conclude that
+the residuals are significantly spatially autocorrelated, meaning that
+there are significant spatial relationships in the data that are not
+reconciled by the current local model.
+
+\hypertarget{step-15-run-mgwr}{%
+\subsubsection{STEP 15: RUN MGWR}\label{step-15-run-mgwr}}
+
+Run the below code chunk to perform a multi-scale geographically
+weighted regression (MGWR). The model is set up the same was as the GWR,
+using the `gwr.multiscale()' function. The major difference here is that
+we do not predefine a distance matrix and bandwidth. The MGWR does this
+automatically, optimizing distance and bandwidth based on scalar
+relationships in the data. To do this, MGWR runs though many iterations,
+eventually discovering an optimized model based on a criterion. This is
+very computationally intensive and can take several hours to run. For
+the purposes of this workshop, we will only do 1 iteration. \emph{To see
+what an optimized model looks like, refer to the pdf if which the model
+was run through 100 iterations!} If you happen to have a powerful laptop
+with you, try running this step again after you complete the workshop
+with more iterations to see how the model improves!
+
+\emph{Note: even when using 1 iteration, the model can take several
+minutes to run. Start the code chunk below and sit back. If it takes to
+long, do not fret! Feel free to follow along with us for the final steps
+and reference to pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Multiscale geographically weighted regression}
+\CommentTok{\# Documentation: https://search.r{-}project.org/CRAN/refmans/GWmodel/html/gwr.multiscale.html}
+\NormalTok{mgwr\_results\_dat\_full }\OtherTok{\textless{}{-}} \FunctionTok{gwr.multiscale}\NormalTok{(LWB\_ADJRATE }\SpecialCharTok{\textasciitilde{}}\NormalTok{ avgReleasesLb\_10yr }
+                                               \SpecialCharTok{+}\NormalTok{ EP\_POV}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_UNEMP}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_PCI}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_NOHSDP}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_AGE17}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_DISABL}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_MINRTY}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_GROUPQ}
+                                               \SpecialCharTok{+}\NormalTok{ EP\_UNINSUR}
+\NormalTok{                                      , }\AttributeTok{data =}\NormalTok{ dat\_full}
+\NormalTok{                                      , }\AttributeTok{max.iterations =} \DecValTok{1} \CommentTok{\# Set max iterations higher to optimize model {-} it\textquotesingle{}s at 2 now to minimize computational burden}
+\NormalTok{                                      , }\AttributeTok{kernel =} \StringTok{"gaussian"}
+\NormalTok{                                      , }\AttributeTok{adaptive =} \ConstantTok{TRUE}
+\NormalTok{                                      , }\AttributeTok{criterion =} \StringTok{"CVR"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+------ Calculate the initial bandwidths for each independent variable ------
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~1 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~1,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5717.772 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5711.716 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5705.165 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5690.18 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5673.595 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5664.943 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5652.043 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5637.796 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5632.127 
+Adaptive bandwidth (number of nearest neighbours): 28 AICc value: 5629.664 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5625.91 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5625.91 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~avgReleasesLb_10yr 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~avgReleasesLb_10yr,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5713.908 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5708.499 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5702.318 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5687.205 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5670.698 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5662.66 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5648.538 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5631.791 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5627.882 
+Adaptive bandwidth (number of nearest neighbours): 28 AICc value: 5627.194 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5624.315 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5624.315 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~EP_POV 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~EP_POV,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5606.07 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5601.182 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5596.853 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5587.852 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5580.962 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5576.817 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5571.875 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5568.479 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5570.028 
+Adaptive bandwidth (number of nearest neighbours): 48 AICc value: 5568.155 
+Adaptive bandwidth (number of nearest neighbours): 54 AICc value: 5570.903 
+Adaptive bandwidth (number of nearest neighbours): 48 AICc value: 5568.155 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~EP_UNEMP 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~EP_UNEMP,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5638.939 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5634.838 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5630.062 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5623.657 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5614.719 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5605.404 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5595.366 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5587.386 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5585.278 
+Adaptive bandwidth (number of nearest neighbours): 28 AICc value: 5584.251 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5586.295 
+Adaptive bandwidth (number of nearest neighbours): 28 AICc value: 5584.251 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~EP_PCI 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~EP_PCI,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5671.087 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5664.544 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5658.141 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5644.299 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5631.33 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5621.795 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5599.999 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5579.468 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5573.842 
+Adaptive bandwidth (number of nearest neighbours): 28 AICc value: 5571.452 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5569.709 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5569.709 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~EP_NOHSDP 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~EP_NOHSDP,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5668.671 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5662.938 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5656.899 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5636.183 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5611.019 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5604.749 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5594.89 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5592.793 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5593.659 
+Adaptive bandwidth (number of nearest neighbours): 48 AICc value: 5592.204 
+Adaptive bandwidth (number of nearest neighbours): 54 AICc value: 5593.578 
+Adaptive bandwidth (number of nearest neighbours): 48 AICc value: 5592.204 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~EP_AGE17 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~EP_AGE17,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5713.641 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5705.423 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5697.957 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5681.291 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5661.275 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5648.983 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5633.382 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5623.984 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5622.17 
+Adaptive bandwidth (number of nearest neighbours): 28 AICc value: 5621.032 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5620.921 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5620.921 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~EP_DISABL 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~EP_DISABL,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5657.156 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5648.884 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5642.455 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5634.531 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5625.255 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5615.317 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5604.257 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5598.619 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5597.74 
+Adaptive bandwidth (number of nearest neighbours): 28 AICc value: 5596.414 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5595.783 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5595.783 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~EP_MINRTY 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~EP_MINRTY,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5632.731 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5627.762 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5624.026 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5611.598 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5598.841 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5597.453 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5592.562 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5593.067 
+Adaptive bandwidth (number of nearest neighbours): 69 AICc value: 5594.717 
+Adaptive bandwidth (number of nearest neighbours): 53 AICc value: 5591.923 
+Adaptive bandwidth (number of nearest neighbours): 48 AICc value: 5592.118 
+Adaptive bandwidth (number of nearest neighbours): 54 AICc value: 5592.288 
+Adaptive bandwidth (number of nearest neighbours): 50 AICc value: 5591.747 
+Adaptive bandwidth (number of nearest neighbours): 50 AICc value: 5591.747 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~EP_GROUPQ 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~EP_GROUPQ,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5717.934 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5709.68 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5702.653 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5686.269 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5667.682 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5656.686 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5640.63 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5614.529 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5608.764 
+Adaptive bandwidth (number of nearest neighbours): 28 AICc value: 5606.319 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5602.025 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5602.025 
+Now select an optimum bandwidth for the model:  LWB_ADJRATE~EP_UNINSUR 
+[1] "bws0[i]<-bw.gwr(LWB_ADJRATE~EP_UNINSUR,data=regression.points,kernel=kernel,approach=approach,adaptive=adaptive,dMat=dMats[[var.dMat.indx[i]]], parallel.method=parallel.method,parallel.arg=parallel.arg)"
+Adaptive bandwidth (number of nearest neighbours): 749 AICc value: 5664.935 
+Adaptive bandwidth (number of nearest neighbours): 471 AICc value: 5660.905 
+Adaptive bandwidth (number of nearest neighbours): 297 AICc value: 5656.736 
+Adaptive bandwidth (number of nearest neighbours): 192 AICc value: 5642.521 
+Adaptive bandwidth (number of nearest neighbours): 124 AICc value: 5629.707 
+Adaptive bandwidth (number of nearest neighbours): 85 AICc value: 5623.436 
+Adaptive bandwidth (number of nearest neighbours): 58 AICc value: 5612.88 
+Adaptive bandwidth (number of nearest neighbours): 44 AICc value: 5603.086 
+Adaptive bandwidth (number of nearest neighbours): 32 AICc value: 5600.471 
+Adaptive bandwidth (number of nearest neighbours): 28 AICc value: 5599.109 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5597.909 
+Adaptive bandwidth (number of nearest neighbours): 22 AICc value: 5597.909 
+------            The end for the initial selections              ------
+------   Calculate the initial beta0 from the above bandwidths    ------
+------            The end for calculating the initial beta0              ------
+------ Select the optimum bandwidths for each independent variable via  AIC  aproach ------
+*****  The back-fitting process for model calibration with bandwiths selected *****
+    Iteration  1 :
+Now select an optimum bandwidth for the variable:  Intercept 
+The newly selected bandwidth for variable  Intercept is:  510 
+The bandwidth used in the last ieration is:  22 and the difference between these two bandwidths is:  488 
+The bandwidth for variable  Intercept will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  avgReleasesLb_10yr 
+The newly selected bandwidth for variable  avgReleasesLb_10yr is:  679 
+The bandwidth used in the last ieration is:  22 and the difference between these two bandwidths is:  657 
+The bandwidth for variable  avgReleasesLb_10yr will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  EP_POV 
+The newly selected bandwidth for variable  EP_POV is:  1053 
+The bandwidth used in the last ieration is:  48 and the difference between these two bandwidths is:  1005 
+The bandwidth for variable  EP_POV will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  EP_UNEMP 
+The newly selected bandwidth for variable  EP_UNEMP is:  795 
+The bandwidth used in the last ieration is:  28 and the difference between these two bandwidths is:  767 
+The bandwidth for variable  EP_UNEMP will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  EP_PCI 
+The newly selected bandwidth for variable  EP_PCI is:  52 
+The bandwidth used in the last ieration is:  22 and the difference between these two bandwidths is:  30 
+The bandwidth for variable  EP_PCI will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  EP_NOHSDP 
+The newly selected bandwidth for variable  EP_NOHSDP is:  211 
+The bandwidth used in the last ieration is:  48 and the difference between these two bandwidths is:  163 
+The bandwidth for variable  EP_NOHSDP will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  EP_AGE17 
+The newly selected bandwidth for variable  EP_AGE17 is:  160 
+The bandwidth used in the last ieration is:  22 and the difference between these two bandwidths is:  138 
+The bandwidth for variable  EP_AGE17 will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  EP_DISABL 
+The newly selected bandwidth for variable  EP_DISABL is:  117 
+The bandwidth used in the last ieration is:  22 and the difference between these two bandwidths is:  95 
+The bandwidth for variable  EP_DISABL will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  EP_MINRTY 
+The newly selected bandwidth for variable  EP_MINRTY is:  84 
+The bandwidth used in the last ieration is:  50 and the difference between these two bandwidths is:  34 
+The bandwidth for variable  EP_MINRTY will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  EP_GROUPQ 
+The newly selected bandwidth for variable  EP_GROUPQ is:  152 
+The bandwidth used in the last ieration is:  22 and the difference between these two bandwidths is:  130 
+The bandwidth for variable  EP_GROUPQ will be continually selected in the next ieration.
+Now select an optimum bandwidth for the variable:  EP_UNINSUR 
+The newly selected bandwidth for variable  EP_UNINSUR is:  713 
+The bandwidth used in the last ieration is:  22 and the difference between these two bandwidths is:  691 
+The bandwidth for variable  EP_UNINSUR will be continually selected in the next ieration.
+    Ieration  0 the change value of RSS (CVR) is:  12.98775 
+----------End of    Iteration  1 ----------
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Model outputs}
+\FunctionTok{print}\NormalTok{(mgwr\_results\_dat\_full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+   ***********************************************************************
+   *                       Package   GWmodel                             *
+   ***********************************************************************
+   Program starts at: 2024-01-29 14:05:18.101785 
+   Call:
+   gwr.multiscale(formula = LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + 
+    EP_UNEMP + EP_PCI + EP_NOHSDP + EP_AGE17 + EP_DISABL + EP_MINRTY + 
+    EP_GROUPQ + EP_UNINSUR, data = dat_full, kernel = "gaussian", 
+    adaptive = TRUE, criterion = "CVR", max.iterations = 1)
+
+   Dependent (y) variable:  LWB_ADJRATE
+   Independent variables:  avgReleasesLb_10yr EP_POV EP_UNEMP EP_PCI EP_NOHSDP EP_AGE17 EP_DISABL EP_MINRTY EP_GROUPQ EP_UNINSUR
+   Number of data points: 1201
+   ***********************************************************************
+   *                       Multiscale (PSDM) GWR                          *
+   ***********************************************************************
+
+   *********************Model calibration information*********************
+   Kernel function: gaussian 
+   Adaptive bandwidths for each coefficient(number of nearest neighbours): 
+              (Intercept) avgReleasesLb_10yr EP_POV EP_UNEMP EP_PCI EP_NOHSDP
+   Bandwidth          510                679   1053      795     52       211
+              EP_AGE17 EP_DISABL EP_MINRTY EP_GROUPQ EP_UNINSUR
+   Bandwidth       160       117        84       152        713
+
+   ****************Summary of GWR coefficient estimates:******************
+                             Min.     1st Qu.      Median     3rd Qu.    Max.
+   Intercept           4.2859e+00  5.2555e+00  5.4336e+00  5.6081e+00  9.9947
+   avgReleasesLb_10yr -1.0892e-06 -8.4186e-07 -6.7163e-07 -4.6544e-07  0.0000
+   EP_POV              3.0967e-02  3.1549e-02  3.1898e-02  3.2330e-02  0.0342
+   EP_UNEMP            1.0981e-01  1.1667e-01  1.2062e-01  1.2426e-01  0.1393
+   EP_PCI             -6.9235e-05  9.1121e-06  1.4922e-05  1.8626e-05  0.0000
+   EP_NOHSDP          -6.4778e-02 -6.1890e-02 -5.9865e-02 -5.6804e-02 -0.0473
+   EP_AGE17           -9.0725e-02 -7.0366e-02 -6.2473e-02 -5.2354e-02 -0.0355
+   EP_DISABL          -4.3142e-02 -1.2207e-02  2.6880e-02  4.9751e-02  0.1367
+   EP_MINRTY           2.2798e-02  4.7882e-02  5.6535e-02  6.2512e-02  0.0709
+   EP_GROUPQ          -7.3934e-02 -5.9662e-02 -4.8217e-02 -3.2266e-02 -0.0240
+   EP_UNINSUR          1.2592e-02  1.6877e-02  1.8886e-02  2.4240e-02  0.0365
+   ************************Diagnostic information*************************
+   Number of data points: 1201 
+   Effective number of parameters (2trace(S) - trace(S'S)): 45.23616 
+   Effective degrees of freedom (n-2trace(S) + trace(S'S)): 1155.764 
+   AICc value:  5525.033 
+   AIC value:  5484.334 
+   BIC value:  4504.118 
+   Residual sum of squares:  6563.795 
+   R-square value:  0.2095785 
+   Adjusted R-square value:  0.1786149 
+
+   ***********************************************************************
+   Program stops at: 2024-01-29 14:10:57.631938 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Model diagnostics}
+\FunctionTok{print}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{GW.diagnostic)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+$RSS.gw
+[1] 6563.795
+
+$AICc
+[1] 5525.033
+
+$AIC
+[1] 5484.334
+
+$BIC
+[1] 4504.118
+
+$R2.val
+[1] 0.2095785
+
+$R2adj
+[1] 0.1786149
+
+$edf
+[1] 1155.764
+
+$enp
+[1] 45.23616
+\end{verbatim}
+
+\hypertarget{step-16-test-for-spatial-autocorrelation}{%
+\subsubsection{STEP 16: TEST FOR SPATIAL
+AUTOCORRELATION}\label{step-16-test-for-spatial-autocorrelation}}
+
+Run the code chunk below to test for spatial autocorrelation in model
+residuals. We do this the same way as with the previous tests (see step
+10 \& 14).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Spatial autocorrelation of MGWR residuals}
+\NormalTok{nb }\OtherTok{\textless{}{-}} \FunctionTok{poly2nb}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\AttributeTok{queen =} \ConstantTok{TRUE}\NormalTok{) }\CommentTok{\# Define neighbors for each polygon}
+\NormalTok{lw }\OtherTok{\textless{}{-}} \FunctionTok{nb2listw}\NormalTok{(nb, }\AttributeTok{style =} \StringTok{"U"}\NormalTok{, }\AttributeTok{zero.policy =} \ConstantTok{TRUE}\NormalTok{) }\CommentTok{\# Assign weights to neighbors}
+\NormalTok{moran\_mgwr }\OtherTok{\textless{}{-}} \FunctionTok{moran.mc}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{residual}
+\NormalTok{                       , lw}
+\NormalTok{                       , }\AttributeTok{nsim =} \DecValTok{999}
+\NormalTok{                       , }\AttributeTok{alternative =} \StringTok{"two.sided"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}\StringTok{"Moran\textquotesingle{}s I statistic: "}\NormalTok{ ,moran\_mgwr}\SpecialCharTok{$}\NormalTok{statistic))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+     statistic              
+[1,] "Moran's I statistic: "
+[2,] "0.0444726921882648"   
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}\StringTok{"P{-}value of Moran\textquotesingle{}s I statistic: "}\NormalTok{, moran\_mgwr}\SpecialCharTok{$}\NormalTok{p.value)) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+     [,1]                              
+[1,] "P-value of Moran's I statistic: "
+[2,] "0.004"                           
+\end{verbatim}
+
+The Moran's \(I\) statistic of the linear model is 0.0444727 and the
+p-value is 0.004. Because the \(p-value\) is \(<0.05\), we conclude that
+the residuals are significantly spatially autocorrelated, meaning that
+there are significant spatial relationships in the data that are not
+reconciled by the current local model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Plot neighborhood sizes (bandwidths)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step-17-generate-table-of-summary-statistics}{%
+\subsubsection{STEP: 17: GENERATE TABLE OF SUMMARY
+STATISTICS}\label{step-17-generate-table-of-summary-statistics}}
+
+Run to code chunk below to generate a table of summary statistics of
+MGWR regression coefficients. we first define a new variable
+`coefficients' as the dataframe of the MGWR results (line XXX). Then we
+use an apply function (`apply()') to perform a list of statistical
+functions (interquartile range and standard deviation) on the
+coefficients variable, and define the output as a new variable
+`summary\_stats' (lines XXX). Last, we turn the `summary\_stats'
+variable into a data frame that we can print as a summary table (lines
+XXX).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Summary statistics of coefficients}
+\NormalTok{coefficients }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF[, }\DecValTok{2}\SpecialCharTok{:}\DecValTok{11}\NormalTok{])}
+\NormalTok{summary\_stats }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(coefficients, }\DecValTok{2}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x) \{}
+  \FunctionTok{c}\NormalTok{(}
+    \AttributeTok{min =} \FunctionTok{round}\NormalTok{(}\FunctionTok{min}\NormalTok{(x, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{4}\NormalTok{),}
+    \AttributeTok{q1 =} \FunctionTok{round}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(x, }\FloatTok{0.25}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{4}\NormalTok{),}
+    \AttributeTok{median =} \FunctionTok{round}\NormalTok{(}\FunctionTok{median}\NormalTok{(x, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{4}\NormalTok{),}
+    \AttributeTok{q3 =} \FunctionTok{round}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(x, }\FloatTok{0.75}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{4}\NormalTok{),}
+    \AttributeTok{max =} \FunctionTok{round}\NormalTok{(}\FunctionTok{max}\NormalTok{(x, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{4}\NormalTok{),}
+    \AttributeTok{sd =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sd}\NormalTok{(x, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\DecValTok{4}\NormalTok{)}
+\NormalTok{  )}
+\NormalTok{\})}
+\NormalTok{summary\_table }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\FunctionTok{t}\NormalTok{(summary\_stats))}
+\FunctionTok{print}\NormalTok{(summary\_table)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+                       min  q1.25.  median  q3.75.     max     sd
+avgReleasesLb_10yr  0.0000  0.0000  0.0000  0.0000  0.0000 0.0000
+EP_POV              0.0310  0.0315  0.0319  0.0323  0.0342 0.0009
+EP_UNEMP            0.1098  0.1167  0.1206  0.1243  0.1393 0.0080
+EP_PCI             -0.0001  0.0000  0.0000  0.0000  0.0000 0.0000
+EP_NOHSDP          -0.0648 -0.0619 -0.0599 -0.0568 -0.0473 0.0043
+EP_AGE17           -0.0907 -0.0704 -0.0625 -0.0524 -0.0355 0.0120
+EP_DISABL          -0.0431 -0.0122  0.0269  0.0498  0.1367 0.0470
+EP_MINRTY           0.0228  0.0479  0.0565  0.0625  0.0709 0.0122
+EP_GROUPQ          -0.0739 -0.0597 -0.0482 -0.0323 -0.0240 0.0143
+EP_UNINSUR          0.0126  0.0169  0.0189  0.0242  0.0365 0.0053
+\end{verbatim}
+
+\hypertarget{step-18-generate-boxplots-of-coefficients}{%
+\subsubsection{STEP 18: GENERATE BOXPLOTS OF
+COEFFICIENTS}\label{step-18-generate-boxplots-of-coefficients}}
+
+Run to below code chunk to generate a box-plot of the distribution of
+MGWR regression coefficients per variable. We first reshape the
+coefficient data table ysing a melt function (`melt()') and define as
+new variable `melt\_coefficients' (line XXX). We then pass this variable
+to a plotting function (`ggplot()'), pass the outputs to variable `p2',
+and print `p2' to display the box-plots (lines XXX).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Boxplots of coefficients}
+\NormalTok{melt\_coefficients }\OtherTok{\textless{}{-}}\NormalTok{ reshape2}\SpecialCharTok{::}\FunctionTok{melt}\NormalTok{(coefficients)}
+
+\NormalTok{p2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(melt\_coefficients, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{fct\_reorder}\NormalTok{(variable, value, }\AttributeTok{.fun =}\NormalTok{ mean), }\AttributeTok{y =}\NormalTok{ value))}
+\NormalTok{p2 }\OtherTok{\textless{}{-}}\NormalTok{ p2 }\SpecialCharTok{+} \FunctionTok{geom\_boxplot}\NormalTok{()}
+\NormalTok{p2 }\OtherTok{\textless{}{-}}\NormalTok{ p2 }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{""}\NormalTok{, }\AttributeTok{y =} \StringTok{"Coefficient"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Boxplots of MGWR Coefficients"}\NormalTok{)}
+\NormalTok{p2 }\OtherTok{\textless{}{-}}\NormalTok{ p2 }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{40}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\NormalTok{p2 }\OtherTok{\textless{}{-}}\NormalTok{ p2 }\SpecialCharTok{+} \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{0}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(p2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-21-1} \end{center}
+
+\hypertarget{step-19-make-a-map-of-the-results}{%
+\subsubsection{STEP 19: MAKE A MAP OF THE
+RESULTS}\label{step-19-make-a-map-of-the-results}}
+
+Congradualtions! You have made it to the last step of the workshop. So
+far, you have formatted data, ran spatial statistical tests, and
+analyzed model diagnostics. Given that this workshop is based in
+geographic perspective, the final step is to obviously make a map! Run
+the code chunk below to generate maps. The code will generate a map of
+the census tracts of Colorado for each variable in our analysis. In each
+map, tracts will be shaded depending on the significance of the
+regrssion coefficients. We do this by creating a series of sub-plots,
+using a custom plotting function (`plot.gwr.coefs'). We pass MGWR
+results for each variable to this function, generating a sub-plot that
+we define as its own variable `p1m - p11m' (lines XXX). Next we pass
+these sub-plot variables to a plot arrangement function
+(`tmap\_arrange') that will organize the sub-plots into a neat, combined
+plot. We define this combined plot as variable `p\_mgwr', and finally
+print the plot to display it (lines XXX). \emph{note: depending on your
+computer, the maps may take awhile to generate!}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Map coefficients}
+\NormalTok{p1m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"Intercept"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{Intercept\_TV)}
+\NormalTok{p2m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"avgReleasesLb\_10yr"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{avgReleasesLb\_10yr\_TV)}
+\NormalTok{p3m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"EP\_POV"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{EP\_POV\_TV)}
+\NormalTok{p4m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"EP\_PCI"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{EP\_PCI\_TV)}
+\NormalTok{p5m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"EP\_NOHSDP"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{EP\_NOHSDP\_TV)}
+\NormalTok{p6m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"EP\_AGE17"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{EP\_AGE17\_TV)}
+\NormalTok{p7m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"EP\_DISABL"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{EP\_DISABL\_TV)}
+\NormalTok{p8m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"EP\_MINRTY"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{EP\_MINRTY\_TV)}
+\NormalTok{p9m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"EP\_GROUPQ"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{EP\_GROUPQ\_TV)}
+\NormalTok{p10m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"EP\_UNINSUR"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{EP\_UNINSUR\_TV)}
+\NormalTok{p11m }\OtherTok{\textless{}{-}} \FunctionTok{plot.gwr.coefs}\NormalTok{(mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF, }\StringTok{"EP\_UNEMP"}\NormalTok{, mgwr\_results\_dat\_full}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{EP\_UNEMP\_TV)}
+
+\NormalTok{p\_mgwr }\OtherTok{\textless{}{-}} \FunctionTok{tmap\_arrange}\NormalTok{(p1m}
+\NormalTok{                     , p2m}
+\NormalTok{                     , p3m}
+\NormalTok{                     , p4m}
+\NormalTok{                     , p5m}
+\NormalTok{                     , p6m}
+\NormalTok{                     , p7m}
+\NormalTok{                     , p8m}
+\NormalTok{                     , p9m}
+\NormalTok{                     , p10m}
+\NormalTok{                     , p11m}
+\NormalTok{                     , }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(p\_mgwr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{COE_MGWR_v2_TW_files/figure-latex/unnamed-chunk-22-1} \end{center}
+
+\end{document}
