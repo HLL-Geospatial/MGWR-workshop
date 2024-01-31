@@ -187,6 +187,13 @@ summary(dat_full)
 
 
 ## Global Model
+
+Modeling approaches that don't explicitly account for spatial relationships, but rather weight every observation the same regardless of its spatial location are referred to here as _global_. On the other hand, _local_ models also consider spatial relationships between observations as an important explanatory variable. In certain cases, spatial relationships act as lurking variables that drastically change the direction of $\beta$ coefficients - this is an example of Simpson's paradox in spatial relationships. Sachdeva and Fotheringham (2023) explore this in detail [here](https://josis.org/index.php/josis/article/view/212/172).
+
+We will start by fitting a global linear model to predict LWB rates by census tract using our environmental exposure variable, $avgReleasesLb\_10yr$ and 16 variables from the SVI. 
+
+### Full Model
+
 ```{r, message=FALSE}
 # fit full model
 lm_full <- lm(LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + EP_NOHSDP + EP_AGE65 + EP_AGE17 + EP_DISABL + EP_SNGPNT + EP_MINRTY + EP_LIMENG + EP_MUNIT + EP_MOBILE + EP_CROWD + EP_NOVEH + EP_GROUPQ + EP_UNINSUR
@@ -195,12 +202,37 @@ lm_full <- lm(LWB_ADJRATE ~ avgReleasesLb_10yr + EP_POV + EP_UNEMP + EP_PCI + EP
 summary(lm_full)
 ```
 
+### Model Selection
+
+Many of the model terms have very low $\beta$ coefficients and insignificant $P-values$. While this doesn't provide enough evidence to remove any specific variables from the model, we can reasonably suspect that model strength may be improved by excluding variables. Next, we will use backward elimination to exclude unimportant variables from the final model. The approach we use here compares model strength using the $\textbf{Akaike information criterion (AIC)}$:
+$$
+AIC = -2ln(L) +2k
+$$
+where $k$ is the number of model parameters and $L$ is the maximized value of the likelihood function for the estimated model. The AIC is a penalized-likelihood criteria of the relative goodness-of-fit of a statistical model to the observed data. Backward selection takes a conservative approach to apply maximum likelihood estimation (MLE) to a regression model's $\beta$ and $\sigma^2$ and land on the most probable parametric values for the observed data. Read more [here](https://bookdown.org/egarpor/PM-UC3M/lm-ii-modsel.html).
+
+In this case, backward elimination works by repeating these two steps:
+
+1) Fit the full model with all terms;
+2) Identify the model term which, when removed, either reduces $R^2$ or the residual sum of squares (RSS) the least.
+
+These steps are repeated until no more explanatory variables can be removed. 
+
+$\textbf{Some important assumptions:}$
+
+* A significance level of $p=0.1$ is a commonly used threshold for backward elimination. We recognize that this is not the case in epidemiology, where important contextual confounders are generally always retained. Note that we are not taking that approach in this tutorial.
+
+* Backward elimination assumes uniform spatial weights, so it is ultimately imperfect for local model selection where spatial relationships are crucial lurking variables. Some more appropriate approaches for local model selection are [geographically weighted lasso](https://doi.org/10.1068/a40256) and the more flexible [geographically weighted elastic net](https://doi.org/10.1080/24694452.2018.1425129). We are sticking with backward elimination in this tutorial so that the general differences between global and local models are easier to interpret.
+
 ```{r, message=FALSE}
 ## Backward selection using model AIC
 lm_red_AIC <- step(lm_full, direction="backward", test="F")
 lm_final <- lm_red_AIC
 summary(lm_final)
 ```
+
+### Model Interpretation
+
+We first start by exploring pairwise relationships between variables to...
 
 ```{r, fig.height = 10, fig.width = 10}
 # Plot correlation matrix of variables from the reduced model
@@ -223,15 +255,21 @@ p <- ggpairs(
 print(p)
 ```
 
+Next, we will draw some diagnostic plots developed by [Eric Erhardt](https://statacumen.com/about/) to assess the...
+
 ```{R, fig.height = 3, fig.width = 10}
 # plot diagnostics
 lm_diag_plots(lm_red_AIC, sw_plot_set = "simpleAV")
 ```
 
-* Full model diagnostics identify point 659 as being influential, and the Cook's distance vs. leverage plot suggests that it exerts some noteworthy leverage on the overall model. However, the AV plots don't corroborate this conclusion, showing that point 659 doesn't appear to pull the line of best fit significantly in its direction.
+The diagnostic plots do suggest that the model is somewhat poorly specified. From the plots above, we see that:
 
+  1) The QQ plot shows that a large proportion of residuals vs. normal values fall outside the standard error range at both the lower and upper bounds, suggesting some heteroskedasticity or kurtosis of model residuals.
+  2) The Cook's distance plot suggests that three points, 459, 952, and 1216 influence overall fit. Typically, we would probably exclude the latter two since they're more than twice the distance as 459. You can do that by un-commenting the chunk above where we combine data tables. However, outliers in the global model do not necessarily indicate local outliers, so it's good practice to leave them in for the time being. 
+  3) The plot of Cook's distance vs. leverage further confirms that point 952 exerts significant leverage on the model.
+  4) Otherwise, we don't see too much structure in the residual vs. variable plots or the added-variable plots. 
 
-For each model: print and interpret model diagnostics and test for spatial autocorrelation.
+#### Spatial Autocorrelation
 
 ```{r}
 # Spatial autocorrelation of global linear model residuals
@@ -419,9 +457,3 @@ p_mgwr <- tmap_arrange(p1_mgwr
                      , ncol = 2)
 print(p_mgwr)
 ```
-
-
-
-
-
-
