@@ -612,7 +612,7 @@ plot.gwr.coefs = function(gwr.model.SDF, variable.name, tvalues) {
   # create the background and main layer with shaded polygons
   p = tm_shape(gwr.model.SDF) +
     tm_polygons(variable.name, palette = "RdYlBu", title = variable.name, alpha = 0.7) +
-    tm_borders(lwd = 0.5) +  # Add borders for all polygons
+    tm_borders(lwd = 0.25) +  # Add borders for all polygons
     
     tm_layout(legend.outside = TRUE,  # Place legend outside the plot
               legend.position = c("right", "top"),  # Position the legend to the right
