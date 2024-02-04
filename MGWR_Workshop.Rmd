@@ -6,11 +6,7 @@ subtitle: |
 author: |
   *^1^ Department of Geography & Environmental Studies, University of New Mexico<br>
   ^2^ Community Environmental Health Program, College of Pharmacy, University of New Mexico Health Sciences Center*
-# date: "`r format(Sys.time(), '%B %d, %Y')`"
-date: |
-  | 2024 PEPH Network Meeting
-  | NIEHS, Durham NC
-  | February 20, 2024
+date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
   html_document:
     toc: true
@@ -118,7 +114,6 @@ Both code chunks below load the necessary packages to complete the workshop. If 
 ```{r}
 ## Installing libraries
 ## If you don't have any of the required packages installed, un-comment and run the necessary lines
-# install.packages("rgdal")
 # install.packages("GWmodel")
 # install.packages("ggplot2")
 # install.packages("GGally")
@@ -132,11 +127,7 @@ Both code chunks below load the necessary packages to complete the workshop. If 
 # install.packages('car')
 # install.packages('Rtools')
 # install.packages('nortest')
-# install.packages("reshape2")
-# install.packages("car")
-# install.packages("ellipse")
-# install.packages("leaps")
-# install.packages("nortest")
+# install.packages('spdep')
 ```
 
 ### Load Libraries into R Environment (STEP 0)
