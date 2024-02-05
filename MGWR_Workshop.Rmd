@@ -618,7 +618,7 @@ p_mgwr <- tmap_arrange(p1_mgwr
                      , p10_mgwr
                      , p11_mgwr
                      , ncol = 2)
-# print(p_mgwr)
+print(p_mgwr)
 ```
 
 Congratulations! You have made it to the last step of the workshop. So far, you have formatted data, ran spatial statistical tests, analyzed model diagnostics, and have plotted maps of model results. In the maps above, we see that the main exposure variable, `avgReleasesLb_10yr` is only significant in about half of the census tracts, and that the linear relationship between it and `LWB_ADJRATE` is generally quite small, albeit positive. This suggests that while the model is generally well-specified, future work ought to explore more influential exposure variables on LWB.
@@ -627,4 +627,4 @@ The main takeaway from this workshop is that there are sophisticated techniques 
 
 
 
-*This workshop is supported by the UNM Center for Native Environmental Health Equity Research -- A Center of Excellence In Environmental Health Disparities Research (1P50ES026102). Additional support comes from the University of New Mexico METALS Superfund Research Program (1P42ES025589) and the New Mexico Integrative Science Program Incorporating Research in Environmental Sciences (NM-INSPIRES) Center at the University of New Mexico (1P30ES032755). The material presented here has not been formally reviewed by the funding agencies. The views expressed herein are solely those of the authors and do not necessarily reflect those of the agencies.*
+*This workshop is supported by the UNM Center for Native Environmental Health Equity Research -- A Center of Excellence In Environmental Health Disparities Research (P50MD015706). Additional support comes from the University of New Mexico METALS Superfund Research Program (1P42ES025589) and the New Mexico Integrative Science Program Incorporating Research in Environmental Sciences (NM-INSPIRES) Center at the University of New Mexico (1P30ES032755). The material presented here has not been formally reviewed by the funding agencies. The views expressed herein are solely those of the authors and do not necessarily reflect those of the agencies.*
