@@ -2,10 +2,14 @@
 title: "Introduction to Spatial Regression Methods in Environmental Health"
 subtitle: |
   | **Daniel Beene^1,2^**
-  | **Theodros Woldeyohannes^1^**<br>
+  | **Theodros Woldeyohannes^1^**
 author: |
+  | *Advised by*<br>
+  | **Yan Lin, PhD^1^**
+  | **Joseph Hoover, PhD^3^**<br><br><br>
   *^1^ Department of Geography & Environmental Studies, University of New Mexico<br>
-  ^2^ Community Environmental Health Program, College of Pharmacy, University of New Mexico Health Sciences Center*
+  ^2^ Community Environmental Health Program, College of Pharmacy, University of New Mexico Health Sciences Center<br>
+  ^3^ Department of Environmental Science, University of Arizona*
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
   html_document:
@@ -40,8 +44,6 @@ knitr::opts_chunk$set(comment = NA, message = FALSE, warning = FALSE, width = 10
 knitr::opts_chunk$set(fig.align = "center", fig.height = 4, fig.width = 6)
 knitr::opts_chunk$set(cache = FALSE)
 ```
-
-
 
 # Background
 
@@ -170,6 +172,15 @@ This workshop uses the datasets below, all of which contain data aggregated to c
    
    $\textbf{Covariates:}$ Estimated proportions of census tract-level social vulnerability from the [2018 ATSDR-CDC Social Vulnerability Index](https://www.atsdr.cdc.gov/placeandhealth/svi/documentation/pdf/SVI2018Documentation_01192022_1.pdf).
 
+Here is a summary of all variables we will use for this analysis:
+
+1. `LWB_ADJRATE` - 2018 Adjusted rate of low weight births (LWB) by census tract in Colorado
+2. `avgReleasesLb_10yr` - 10-year average (2008-2018) of total toxic releases in lbs. within 50-km of population-weighted census tract centroids
+3. `RPL_THEME1` - Percentile ranking by census tract of SVI socioeconomic status theme (described below)
+4. `RPL_THEME2` - SVI household characteristics theme
+5. `RPL_THEME3` - SVI minority status and language theme
+6. `RPL_THEME4` - SVI housing type and transportation theme
+
 Raw data is imported in the form of spreadsheets, in which observations have location identifiers. We then put this data into a GIS environment and spatialize it by joining the data to spatial objects. For this workshop we will use vector data. Vector data can simply be thought of as polygons (shapes) with location information. In other words, areas projected onto the surface of the Earth. For this workshop we will use vector data in *shapefile* format. In the case of this workshop, these shapes represent the census tracts of the state of Colorado. By joining the raw data to census tracts, we can use spatial statistics to analyze the spatial relationships within the data. 
 
 Shapefiles are a data format for storing geometry and attribute information of a spatial dataset. Notice that we only read in one file with a .shp extension, but that the file directory *./Tracts* contains 7 items with the same name but different extensions. All of these files are necessary for GIS software to read and display a .shp. 
@@ -206,9 +217,9 @@ All GEOIDs are `r unique(nchar(dat_tri$GEOID10))` characters long. *Note: if thi
 
 ### Import Confounders (STEP 3)
 
-This data table contains 2018 SVI data aggregated to census tracts. We first read in the data table and define it as a variable `svi`, and format to pad GEOIDs (called 'FIPS' in the SVI dataset)$^1$ as done in Step 2. Next, we pipe the `svi` variable into a filtering function 'filter()', to filter out data that is not located with Colorado census tracts, and define this filtered data as a new variable `svi_sub`. Next, we convert missing values (-999) to *NA*; this will make it easier to exclude missing values from statistical analysis later on. Lastly, we pipe the `svi_sub` variable into the *select()* function to select only fields that start with "SPL_THEME", and overwrite the `svi_sub` variable with this selection.
+This data table contains 2018 SVI data aggregated to census tracts. We first read in the data table and define it as a variable `svi`, and format to pad GEOIDs (called 'FIPS' in the SVI dataset)$^1$ as done in Step 2. Next, we pipe the `svi` variable into a filtering function 'filter()', to filter out data that is not located with Colorado census tracts, and define this filtered data as a new variable `svi_sub`. Next, we convert missing values (-999) to *NA*; this will make it easier to exclude missing values from statistical analysis later on. Lastly, we pipe the `svi_sub` variable into the *select()* function to select only fields that start with "RPL_THEME", and overwrite the `svi_sub` variable with this selection.
 
-There are four SPL_THEME variables in the 2018 SVI. They are the sum of variables included in four themes generally related to social vulnerability:
+There are four RPL_THEME variables in the 2018 SVI. These are the summary percentile rankings by census tract of variables included in four themes generally related to social vulnerability:
 
 1. $\textbf{Theme 1}$: Socioeconomic status
     + Below poverty
@@ -244,7 +255,7 @@ svi_sub[svi_sub == -999] <- NA # Missing values are coded as -999, here we repla
 
 # Keep percentage, percentile, theme ranking, flag variables, and total population
 svi_sub <- svi_sub %>%
-  dplyr::select(FIPS, starts_with(c("SPL_THEME")))
+  dplyr::select(FIPS, starts_with(c("RPL_THEME")))
 
 # unique(nchar(svi_sub$FIPS))
 ```
@@ -294,7 +305,7 @@ dat_full <- dat_full %>%
 # Create a subset for global models
 global_dat <- dat_full %>%
   # select(GEOID10, avgReleasesLb_10yr, LWB_ADJRATE, E_TOTPOP, starts_with("EP_")) # Keep total population estimate (E_TOTPOT) and land area (ALAND10) for later reference
-  select(GEOID10, avgReleasesLb_10yr, LWB_ADJRATE, starts_with("SPL_"))
+  select(GEOID10, avgReleasesLb_10yr, LWB_ADJRATE, starts_with("RPL_"))
 global_dat <- 
   data.frame(global_dat[, 1:8]
              ) 
@@ -325,7 +336,7 @@ The code chunk below creates a correlation matrix plot of the variables from our
 
 # Plot correlation matrix of variables from the global model
 vars <- c(
-  "avgReleasesLb_10yr", "SPL_THEME1", "SPL_THEME2", "SPL_THEME3", "SPL_THEME4"
+  "avgReleasesLb_10yr", "RPL_THEME1", "RPL_THEME2", "RPL_THEME3", "RPL_THEME4"
 )
 
 # Create a subset of 'global_dat' with selected variables
@@ -355,7 +366,7 @@ In this code chunk we run an ordinary least squares linear regression, with LWB 
 
 ```{r, message=FALSE}
 # Fit global model
-lm_full <- lm(LWB_ADJRATE ~ avgReleasesLb_10yr + SPL_THEME1 + SPL_THEME2 + SPL_THEME3 + SPL_THEME4
+lm_full <- lm(LWB_ADJRATE ~ avgReleasesLb_10yr + RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4
               , data = global_dat)
 
 summary(lm_full)
@@ -409,7 +420,7 @@ print(rbind("Moran's I statistic: " ,moran_lm$statistic))
 print(rbind("P-value of Moran's I statistic: ", moran_lm$p.value)) 
 
 ```
-The Moran's $I$ statistic of the linear model is `r moran_lm$statistic %>% signif(3)` and the p-value is `r moran_lm$p.value %>% signif(3)`. Because the $p-value$ is $<0.05$, we can conclude at a 95% CI that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current local model.
+The Moran's $I$ statistic of the linear model is `r moran_lm$statistic %>% signif(3)` and the p-value is `r moran_lm$p.value %>% signif(3)`. Because the $p-value$ is $<0.05$, we can conclude at a 95% CI that the residuals are significantly spatially autocorrelated, meaning that there are significant spatial relationships in the data that are not reconciled by the current global model.
 
 ## Local Models
 ### Calculate Distance Matrix (STEP 8)
@@ -428,13 +439,13 @@ DM <- gw.dist(dp.locat = coordinates(dat_full))
 
 Bandwidth, or neighborhood size, is the most influential parameter in GWR because it can significantly change parameter estimates. Simply put, larger bandwidths have smaller parameter weights thus increasing variation, and shorter bandwidths have larger weights to reduce local variation of parameters. Here, we use an automated cross-validation (CV) approach to optimize weights for each model term.
 
-```{r, echo=FALSE}
+```{r}
 # Define optimal bandwidths for GWR
 bw <- bw.gwr(LWB_ADJRATE ~ avgReleasesLb_10yr 
-                         + SPL_THEME1
-                         + SPL_THEME2
-                         + SPL_THEME3
-                         + SPL_THEME4
+                         + RPL_THEME1
+                         + RPL_THEME2
+                         + RPL_THEME3
+                         + RPL_THEME4
            , data = dat_full
            , approach = "CV"
            , kernel = "gaussian"
@@ -451,10 +462,10 @@ Run to code chunk below to perform a basic GWR. We do this by passing our distan
 ```{r}
 # Basic GWR
 gwr_results_dat <- gwr.basic(LWB_ADJRATE ~ avgReleasesLb_10yr 
-                                         + SPL_THEME1
-                                         + SPL_THEME2
-                                         + SPL_THEME3
-                                         + SPL_THEME4
+                                         + RPL_THEME1
+                                         + RPL_THEME2
+                                         + RPL_THEME3
+                                         + RPL_THEME4
                            , data = dat_full
                            , bw = bw
                            , dMat = DM
@@ -522,7 +533,7 @@ print(p_gwr_bp)
 
 ```
 
-Generally, group means >0 suggest a positive relationship between the explanatory variable and outcome and vice versa. Sometimes $\beta$ coefficients are both positive and negative – this can make interpretation difficult, requiring deeper interrogation of how local relationships play out. In the plots above, we see that `avgReleasesLb_10yr`, `SPL_THEME2`, `SPL_THEM3` and `SPL_TMEME4` Next, we will map these coefficients to see where this is occurring.
+Generally, group means >0 suggest a positive relationship between the explanatory variable and outcome and vice versa. Sometimes $\beta$ coefficients are both positive and negative – this can make interpretation difficult, requiring deeper interrogation of how local relationships play out. In the plots above, we see that `avgReleasesLb_10yr`, `RPL_THEME2`, `RPL_THEM3` and `RPL_TMEME4` Next, we will map these coefficients to see where this is occurring.
 
 #### Mapping GWR Beta Coefficients
 
@@ -534,10 +545,10 @@ We do this by creating a series of sub-plots, using a custom plotting function *
 # Map coefficients
 p1_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "Intercept", gwr_results_dat$SDF$Intercept_TV)
 p2_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "avgReleasesLb_10yr", gwr_results_dat$SDF$avgReleasesLb_10yr_TV)
-p3_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "SPL_THEME1", gwr_results_dat$SDF$SPL_THEME1_TV)
-p4_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "SPL_THEME2", gwr_results_dat$SDF$SPL_THEME2_TV)
-p5_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "SPL_THEME3", gwr_results_dat$SDF$SPL_THEME3_TV)
-p6_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "SPL_THEME4", gwr_results_dat$SDF$SPL_THEME4_TV)
+p3_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "RPL_THEME1", gwr_results_dat$SDF$RPL_THEME1_TV)
+p4_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "RPL_THEME2", gwr_results_dat$SDF$RPL_THEME2_TV)
+p5_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "RPL_THEME3", gwr_results_dat$SDF$RPL_THEME3_TV)
+p6_gwr <- plot.gwr.coefs(gwr_results_dat$SDF, "RPL_THEME4", gwr_results_dat$SDF$RPL_THEME4_TV)
 
 
 p_gwr <- tmap_arrange(p1_gwr
@@ -572,9 +583,9 @@ In the map above, we see that the predictive power of the GWR model is spatially
 Congratulations! You have made it to the last step of the workshop. So far, you have:
 
 1. Formatted data
-2. Ran spatial statistical tests
+2. Ran global and local statistical tests
 3. Analyzed model diagnostics, and 
-4. Plotted a simple map of model results. 
+4. Plotted simple maps of local model results. 
 
 The main takeaway from this workshop is that there are sophisticated techniques for exploring the inherently spatial nature of environmental exposures and health outcomes. With some minimal data formatting, you should be able to modify the code contained here to explore these types of relationships in your own research.
 
@@ -582,19 +593,19 @@ When you run the last code chunk below you will see that the overall predictive 
 
 This is a crucial takeaway: spatial regression models don't automatically resolve lurking spatial relationships, but they do account for some portion of them. Aside from identifying more variables to explain the spatial nature of exposure-outcome models, recall that there are other approaches like spatial autoregressive (SAR) models, which introduce spatial lag or spatial error terms to the regression. It's worth noting that SAR models are inherently global because they cannot spatially locate outliers.
 
-```{r echo = FALSE, results = 'asis'}
+```{r}
 # Data frame for summary table
 table_data <- data.frame(
   Metric = c("R2", "Adj. R2", "AIC", "BIC", "Moran's I (p-value)"),
   LM = c(summary(lm_full)$r.squared %>% signif(3)
        , summary(lm_full)$adj.r.squared %>% signif(3)
-       , AIC(lm_full) %>% signif(3)
-       , BIC(lm_full) %>% signif(3)
+       , AIC(lm_full) %>% signif(7)
+       , BIC(lm_full) %>% signif(7)
        , paste0(moran_lm$statistic %>% signif(3), " (", moran_lm$p.value %>% signif(3), ")")),
   GWR = c(gwr_results_dat$GW.diagnostic$gw.R2 %>% signif(3)
        , gwr_results_dat$GW.diagnostic$gwR2.adj %>% signif(3)
-       , gwr_results_dat$GW.diagnostic$AIC %>% signif(3)
-       , gwr_results_dat$GW.diagnostic$BIC %>% signif(3)
+       , gwr_results_dat$GW.diagnostic$AIC %>% signif(7)
+       , gwr_results_dat$GW.diagnostic$BIC %>% signif(7)
        , paste0(moran_gwr$statistic %>% signif(3), " (", moran_gwr$p.value %>% signif(3), ")"))
 )
 
@@ -618,10 +629,10 @@ Run the below code chunk to perform a multiscale geographically weighted regress
 # Multiscale geographically weighted regression
 # Documentation: https://search.r-project.org/CRAN/refmans/GWmodel/html/gwr.multiscale.html
 mgwr_results_dat_full <- gwr.multiscale(LWB_ADJRATE ~ avgReleasesLb_10yr 
-                                               + SPL_THEME1
-                                               + SPL_THEME2
-                                               + SPL_THEME3
-                                               + SPL_THEME4
+                                               + RPL_THEME1
+                                               + RPL_THEME2
+                                               + RPL_THEME3
+                                               + RPL_THEME4
                                       , data = dat_full
                                       , max.iterations = 1 # Set max iterations higher to optimize model - it's at 2 now to minimize computational burden
                                       , kernel = "gaussian" # wgt = exp(-.5*(vdist/bw)^2);
@@ -690,9 +701,9 @@ print(p_mgwr_bp)
 
 ```
 
-In the plots above, we see that `SPL_THEME1` and `SPL_TMEME3` (to an extent) are both positive and negative. Again, we will map these coefficients to see where this is occurring. 
+In the plots above, we see that `RPL_THEME1` and `RPL_TMEME3` (to an extent) are both positive and negative. Again, we will map these coefficients to see where this is occurring. 
 
-$\textbf{A note on MGWR iterations:}$ In the HTML document you will see that we ran the MGWR with a maximum of 100 iterations in hopes that the model will converge using the CVR backfitting criterion. Even though it doesn't converge with this adjustment, we do see different results for multiple model diagnostics, holding everything else constant. Most notably, $\beta$ coefficients for `SPL_THEME1` are now solidly positive. While you can make meaningful inference about model strength with one or a few iterations, it's good practice to let the model approach convergence.
+$\textbf{A note on MGWR iterations:}$ In the HTML document you will see that we ran the MGWR with a maximum of 100 iterations in hopes that the model will converge using the CVR backfitting criterion. Even though it doesn't converge with this adjustment, we do see different results for multiple model diagnostics, holding everything else constant. Most notably, $\beta$ coefficients for `RPL_THEME1` are now solidly positive. While you can make meaningful inference about model strength with one or a few iterations, it's good practice to let the model approach convergence.
 
 ## Mapping Results (OPTIONAL STEP 3)
 
@@ -702,10 +713,10 @@ Run the code chunk below to generate maps of MGWR $\beta$ coefficients. *Note: d
 # Map coefficients
 p1_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "Intercept", mgwr_results_dat_full$SDF$Intercept_TV)
 p2_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "avgReleasesLb_10yr", mgwr_results_dat_full$SDF$avgReleasesLb_10yr_TV)
-p3_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "SPL_THEME1", mgwr_results_dat_full$SDF$SPL_THEME1_TV)
-p4_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "SPL_THEME2", mgwr_results_dat_full$SDF$SPL_THEME2_TV)
-p5_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "SPL_THEME3", mgwr_results_dat_full$SDF$SPL_THEME3_TV)
-p6_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "SPL_THEME4", mgwr_results_dat_full$SDF$SPL_THEME4_TV)
+p3_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "RPL_THEME1", mgwr_results_dat_full$SDF$RPL_THEME1_TV)
+p4_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "RPL_THEME2", mgwr_results_dat_full$SDF$RPL_THEME2_TV)
+p5_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "RPL_THEME3", mgwr_results_dat_full$SDF$RPL_THEME3_TV)
+p6_mgwr <- plot.gwr.coefs(mgwr_results_dat_full$SDF, "RPL_THEME4", mgwr_results_dat_full$SDF$RPL_THEME4_TV)
 
 
 p_mgwr <- tmap_arrange(p1_mgwr
@@ -721,24 +732,24 @@ In the map above, we see that the main exposure variable, `avgReleasesLb_10yr` i
 
 Finally, let's compare selected diagnostics across all three models:
 
-```{r echo = FALSE, results = 'asis'}
+```{r}
 # Data frame for summary table
 table_data <- data.frame(
   Metric = c("R2", "Adj. R2", "AIC", "BIC", "Moran's I (p-value)"),
   LM = c(summary(lm_full)$r.squared %>% signif(3)
        , summary(lm_full)$adj.r.squared %>% signif(3)
-       , AIC(lm_full) %>% signif(3)
-       , BIC(lm_full) %>% signif(3)
+       , AIC(lm_full) %>% signif(7)
+       , BIC(lm_full) %>% signif(7)
        , paste0(moran_lm$statistic %>% signif(3), " (", moran_lm$p.value %>% signif(3), ")")),
   GWR = c(gwr_results_dat$GW.diagnostic$gw.R2 %>% signif(3)
        , gwr_results_dat$GW.diagnostic$gwR2.adj %>% signif(3)
-       , gwr_results_dat$GW.diagnostic$AIC %>% signif(3)
-       , gwr_results_dat$GW.diagnostic$BIC %>% signif(3)
+       , gwr_results_dat$GW.diagnostic$AIC %>% signif(7)
+       , gwr_results_dat$GW.diagnostic$BIC %>% signif(7)
        , paste0(moran_gwr$statistic %>% signif(3), " (", moran_gwr$p.value %>% signif(3), ")")),
   MGWR = c(mgwr_results_dat_full$GW.diagnostic$R2.val %>% signif(3)
        , mgwr_results_dat_full$GW.diagnostic$R2adj %>% signif(3)
-       , mgwr_results_dat_full$GW.diagnostic$AIC %>% signif(3)
-       , mgwr_results_dat_full$GW.diagnostic$BIC %>% signif(3)
+       , mgwr_results_dat_full$GW.diagnostic$AIC %>% signif(7)
+       , mgwr_results_dat_full$GW.diagnostic$BIC %>% signif(7)
        , paste0(moran_mgwr$statistic %>% signif(3), " (", moran_mgwr$p.value %>% signif(3), ")"))
 )
 
@@ -749,4 +760,24 @@ knitr::kable(table_data, format = "markdown")
 
 *This workshop is supported by the UNM Center for Native Environmental Health Equity Research -- A Center of Excellence In Environmental Health Disparities Research (P50MD015706). Additional support comes from the University of New Mexico METALS Superfund Research Program (1P42ES025589) and the New Mexico Integrative Science Program Incorporating Research in Environmental Sciences (NM-INSPIRES) Center at the University of New Mexico (1P30ES032755). The material presented here has not been formally reviewed by the funding agencies. The views expressed herein are solely those of the authors and do not necessarily reflect those of the agencies.*
 
+# Selected References
+Brunsdon, C., S. Fotheringham, and M. Charlton. 1998. Geographically Weighted Regression. *Journal of the Royal Statistical   Society: Series D (The Statistician)* 47 (3):431–443.
+
+Bureau, U. C. 2021. Centers of Population. *Census.gov.* https://www.census.gov/geographies/reference-files/time-series/geo/centers-population.html (last accessed 7 February 2024).
+
+———. 2023. American National Standards Institute (ANSI), Federal Information Processing Series (FIPS), and Other Standardized Geographic Codes. *Census.gov.* https://www.census.gov/library/reference/code-lists/ansi.html (last accessed 7 February 2024).
+
+———. 2024. TIGER/Line Shapefiles. Census.gov. https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html (last accessed 7 February 2024).
+
+CDPHE Composite Selected Health Outcome Dataset (Census Tract). 2022. https://data-cdphe.opendata.arcgis.com/datasets/cdphe-composite-selected-health-outcome-dataset-census-tract/explore (last accessed 7 February 2024).
+
+Fotheringham, A. S., W. Yang, and W. Kang. 2017. Multiscale Geographically Weighted Regression (MGWR). *Annals of the American Association of Geographers* 107 (6):1247–1265.
+
+GISGeography. 2017. What is Tobler’s First Law of Geography? *GIS Geography.* https://gisgeography.com/tobler-first-law-of-geography/ (last accessed 7 February 2024).
+
+Kögel, T. 2017. Simpson’s paradox and the ecological fallacy are not essentially the same: The example of the fertility and female employment puzzle. https://www.researchgate.net/publication/301300241.
+
+Sachdeva, M., and A. S. Fotheringham. 2023. A Geographical Perspective on Simpson’s Paradox. *Journal of Spatial Information Science* (26):1–25.
+
+US EPA. 2023. TRI Basic Data Files: Calendar Years 1987-Present. https://www.epa.gov/toxics-release-inventory-tri-program/tri-basic-data-files-calendar-years-1987-present (last accessed 7 February 2024).
 
