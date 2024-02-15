@@ -123,6 +123,7 @@ Both code chunks below load the necessary packages to complete the workshop. If 
 ## Installing libraries
 ## If you don't have any of the required packages installed, un-comment and run the necessary lines
 # install.packages("GWmodel")
+# install.packages("reshape2")
 # install.packages("ggplot2")
 # install.packages("GGally")
 # install.packages("gridExtra")
@@ -145,6 +146,7 @@ Even if you've downloaded and installed the necessary libraries, they haven't be
 ```{r}
 # Import libraries
 library(GWmodel)
+library(reshape2)
 library(ggplot2)
 library(GGally)
 library(gridExtra)
